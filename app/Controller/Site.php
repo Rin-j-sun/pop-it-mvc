@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-use mvc\core\Src\View;
+use Src\View;
 
 class Site
 {

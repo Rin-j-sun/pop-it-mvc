@@ -1,11 +1,8 @@
 <?php
 
-namespace pop-it-mvc\core\Src;
+namespace Src;
 
 use Error;
-use popuse;
-
-popuse popuse pop
 
 class Application
 {
@@ -32,3 +29,4 @@ class Application
         $this->route->start();
     }
 }
+
