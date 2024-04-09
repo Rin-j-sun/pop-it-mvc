@@ -1,5 +1,8 @@
 <?php
 //Путь до директории с конфигурационными файлами
+use Src\Application;
+use Src\Settings;
+
 const DIR_CONFIG = '/../config';
 
 //Подключение автозагрузчика composer
@@ -20,5 +23,5 @@ function getConfigs(string $path = DIR_CONFIG): array
 
 require_once __DIR__ . '/../routes/web.php';
 
-return new mvc\core\Src\Application(new mvc\core\Src\Settings(getConfigs()));
+return new Application(new Settings(getConfigs()));
 

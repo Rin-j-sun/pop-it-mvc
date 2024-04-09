@@ -4,6 +4,7 @@ namespace Src;
 
 use Error;
 
+
 class Application
 {
     private Settings $settings;
@@ -29,4 +30,3 @@ class Application
         $this->route->start();
     }
 }
-
