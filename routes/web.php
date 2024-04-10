@@ -1,7 +1,7 @@
 <?php
 
-use Controller\Site;
 use Src\Route;
 
-Route::add('go', [Site::class, 'index']);
-Route::add('hello', [Site::class, 'hello']);
+Route::add('go', [Controller\Site::class, 'index']);
+Route::add('hello', [Controller\Site::class, 'hello']);
+Route::add('signup', [Controller\Site::class, 'signup']);
