@@ -5,9 +5,15 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../public/style/style.css" type="text/css">
     <title>Pop it MVC</title>
 </head>
 <body>
+<?php
+if (app()->auth::check()):
+if (app()->auth::checkRole()) echo 'ti loh';
+endif;
+?>
 <header>
     <nav>
         <a href="<?= app()->route->getUrl('/hello') ?>">Главная</a>
@@ -15,7 +21,7 @@
         if (!app()->auth::check()):
             ?>
             <a href="<?= app()->route->getUrl('/login') ?>">Вход</a>
-            <a href="<?= app()->route->getUrl('/signup') ?>">Регистрация</a>
+<!--            <a href="--><?php //= app()->route->getUrl('/signup') ?><!--">Регистрация</a>-->
         <?php
         else:
             ?>

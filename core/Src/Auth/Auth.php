@@ -2,6 +2,7 @@
 
 namespace Src\Auth;
 
+use Model\User;
 use Src\Session;
 
 class Auth
@@ -57,5 +58,14 @@ class Auth
         Session::clear('id');
         return true;
     }
+
+    public static function checkRole(): bool
+    {
+        $userRole = User::where('id', '=', $_SESSION['id'])->first()->role_id;
+
+        if ($userRole === 5) return true;
+        else return false;
+    }
+
 
 }
