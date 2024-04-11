@@ -1,5 +1,6 @@
 <head>
     <link rel="stylesheet" href="/pop-it-mvc/public/style/hello.css">
+    <link rel="stylesheet" href="/pop-it-mvc/public/style/admin/admin.css">
 </head>
 
 
@@ -12,24 +13,25 @@ if (!app()->auth::check()):
 
     <h2>Добро Пожаловать В Деканат</h2>
 
-    <button class="button_orange"><a href="<?= app()->route->getUrl('/login') ?>" class="button_nav_link">Войти</a></button>
+    <a href="<?= app()->route->getUrl('/login') ?>" class="button_nav_link"><button class="button_orange">Войти</button></a>
 
     <img class="students" src="/pop-it-mvc/public/img/image 3.png" alt="photo">
 </div>
 <?php
 else:
-    if (app()->auth::checkRole()):
+    if (!app()->auth::checkRole()):
         ?>
+        <div class="content_main">
         <div class="content_main_admin">
-            <div class="add_employee">
-                <h1>Добавьте новые данные</h1>
-                <div class="add_employee_info">
-                    <p>Добавьте нового сотрудника</p>
-                    <button class="button_add"><a href="<?= app()->route->getUrl('/addEmployees') ?>" class="button_add_link">Добавить</a></button>
-                </div>
-            </div>
-            <img src="/pop-it-mvc/public/image/main_admin.jpg" class="image" alt="Изображение">
+                <h1>Пользователь : </h1>
+                <h2>Администратор </h2>
+                <img class = "photo_profile" src="/pop-it-mvc/public/img/photo.png" class="image" alt="Изображение">
+                <h2>Я - самый крутой админ во вселенной!!! </h2>
+
         </div>
+        <img class = "photo_bell" src="/pop-it-mvc/public/img/Bell.png" class="image" alt="Изображение">
+        </div>
+
     <?php
     else:
         ?>

@@ -14,8 +14,33 @@ body{
 
 }
 
+
+.photo_bell{
+    width: 30px;
+    height: 30px;
+    margin-left: 50%;
+    margin-top: 1%;
+}
+
+.photo_profile{
+    width: 120px;
+    height: 120px;
+    margin-left: 2%;
+    margin-bottom: 2%;
+}
+
 h1{
+    font-size: 30px;
+    color: #583E26;
+}
+
+.h_admin{
     margin-left: -15%;
+}
+
+.h_sotr{
+    margin-left: -13%;
+    margin-right: -25%;
 }
 
 nav{
@@ -41,9 +66,23 @@ nav{
     width: 135px;
     height: 45px;
     color: #3C2702;
-    background-color: white;
-    margin-left: 30%;
+    background-color: #D9D9D9;
+    margin-left: 60%;
 }
+
+.nav_button_groupe{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-right: -10%;
+}
+
+.nav_button:active{
+    background-color: #3A3030;
+}
+
 
 main{
     min-height: 495px;

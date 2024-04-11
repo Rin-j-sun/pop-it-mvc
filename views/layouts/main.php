@@ -25,15 +25,17 @@ if (!app()->auth::check()):
 <header>
     <?php
     else:
-        if (app()->auth::checkRole()):
+        if (!app()->auth::checkRole()):
+//       если зашёл админ
             ?>
             <header>
-                <nav>
-                    <div class="nav">
-                        <h1>Деканат<h1>
-                        <button class="button_nav"><a href="<?= app()->route->getUrl('/logout') ?>" class="button_nav_link">Выход</a></button>
+                <nav class="nav_employees">
+                    <h1 class = "h_admin">Деканат</h1>
+                    <div class="nav_button_groupe">
+                        <a href="<?= app()->route->getUrl('/employees') ?>"><button class = "nav_button">Сотрудники</button></a>
+                        <a href="<?= app()->route->getUrl('/hello') ?>"><button class = "nav_button">Личный кабинет</button></a>
+                        <a href="<?= app()->route->getUrl('/logout') ?>"><button class = "nav_button">Выход</button></a>
                     </div>
-
                 </nav>
             </header>
             <main>
@@ -42,22 +44,22 @@ if (!app()->auth::check()):
         <?php
         else:
             ?>
+<!--        Если зашёл не админ-->
             <header>
                 <nav class="nav_employees">
-                    <h1>Деканат<h1>
-                            <button class = "nav_button">
-                                <a href="<?= app()->route->getUrl('/employees') ?>">Сотрудники</a>
-                            </button>
-                            <button class = "nav_button">
-                                <a href="<?= app()->route->getUrl('/hello') ?>">Личный кабинет</a>
-                            </button>
-                            <button class = "nav_button">
-                                <a href="<?= app()->route->getUrl('/logout') ?>">Выход</a>
-                            </button>
+                    <h1 class = "h_sotr">Деканат</h1>
+                            <div class="nav_button_groupe">
+                                <a href="<?= app()->route->getUrl('/addDiscipline') ?>"><button class = "nav_button">Дисциплины</button></a>
+                                <a href="<?= app()->route->getUrl('/addStudents') ?>"><button class = "nav_button">Студенты</button></a>
+                                <a href="<?= app()->route->getUrl('/employees') ?>"><button class = "nav_button">Успеваемость</button></a>
+                                <a href="<?= app()->route->getUrl('/hello') ?>"><button class = "nav_button">Личный кабинет</button></a>
+                                <a href="<?= app()->route->getUrl('/logout') ?>"><button class = "nav_button">Выход</button></a>
+                            </div>
                 </nav>
             </header>
             <main>
                 <?= $content ?? '' ?>
+
             </main>
         <?php
         endif;
