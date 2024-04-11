@@ -2,7 +2,6 @@
 
 namespace Src\Auth;
 
-use Model\User;
 use Src\Session;
 
 class Auth
@@ -58,11 +57,10 @@ class Auth
         Session::clear('id');
         return true;
     }
-
+    //Проверка, то что роль пользователя-админ
     public static function checkRole(): bool
     {
-        $userRole = User::where('id', '=', $_SESSION['id'])->first()->role_id;
-
+        $userRole = self::user()::where('id', '=', $_SESSION['id'])->first()->id_role;
         if ($userRole === 5) return true;
         else return false;
     }

@@ -8,5 +8,6 @@ return [
     'routeMiddleware' => [
         'auth' => \Middlewares\AuthMiddleware::class,
         'role' => \Middlewares\RoleMiddleware::class,
+        'roleEmployees' => \Middlewares\RoleEmployeesMiddleware::class,
     ]
 ];

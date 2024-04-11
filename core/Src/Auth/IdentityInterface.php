@@ -10,3 +10,4 @@ interface IdentityInterface
 
     public function attemptIdentity(array $credentials);
 }
+

@@ -15,7 +15,6 @@ class Application
     private Capsule $dbManager;
     private Auth $auth;
 
-
     public function __construct(Settings $settings)
     {
         //Привязываем класс со всеми настройками приложения

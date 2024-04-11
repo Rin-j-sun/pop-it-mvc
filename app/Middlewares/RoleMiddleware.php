@@ -9,10 +9,9 @@ class RoleMiddleware
 {
     public function handle(Request $request)
     {
-        //Если пользователь не админ, то редирект на главную страницу
+        //Если пользователь не админ, то редирект на главную страницу сотрудника
         if (!Auth::checkRole()) {
             app()->route->redirect('/hello');
         }
     }
-
 }
