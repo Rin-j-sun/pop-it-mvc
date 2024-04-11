@@ -1,3 +1,68 @@
-/** {*/
-/*    background: black;*/
-/*}*/
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: 0;
+}
+
+a{
+    color: #3C2702;
+    text-decoration: none;
+}
+
+body{
+
+}
+
+h1{
+    margin-left: -15%;
+}
+
+nav{
+    background-color: #C8981B;
+    height: 90px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav_button{
+    border: #3C2702 2px solid;
+    border-radius: 50px;
+    width: 135px;
+    height: 45px;
+    color: #3C2702;
+    background-color: white;
+    margin-right: 50px;
+}
+.nav_button:last-child{
+    border: #3C2702 2px solid;
+    border-radius: 50px;
+    width: 135px;
+    height: 45px;
+    color: #3C2702;
+    background-color: white;
+    margin-left: 30%;
+}
+
+main{
+    min-height: 495px;
+}
+
+.footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: #C8981B;
+    height: 90px;
+    align-items: center;
+}
+
+.owl{
+    width: 50px;
+    height: 40px;
+}
+.students{
+    width: 50px;
+    height: 40px;
+}
