@@ -1,0 +1,44 @@
+.inf_text{
+    font-size: 30px;
+    color: #583E26;
+    margin-left: 27%;
+    margin-top: 3%;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20%;
+}
+
+input{
+    width: 450px;
+    height: 60px;
+    border-radius: 50px;
+    border: 2px solid #EC9704;
+    background-color: #EC9704;
+    opacity: 30%;
+    margin-top: 10%;
+}
+
+input::placeholder{
+    color: black;
+}
+
+button{
+    border: #EC9704 2px solid;
+    border-radius: 50px;
+    width: 210px;
+    height: 56px;
+    color: #EC9704;
+    background-color: white;
+    margin-top: 5%;
+    margin-bottom: 10%;
+}
+
+img{
+    position: absolute;
+    margin-left: 36%;
+    margin-top: -10%;
+}

@@ -1,17 +1,21 @@
 <head>
-    <link rel="stylesheet" href="../../public/style/style.css">
+    <link rel="stylesheet" href="/pop-it-mvc/public/style/login.css">
 </head>
 
-<h2>Авторизация</h2>
-<h3><?= $message ?? ''; ?></h3>
+<div class = "inf_text">
+    <h2>Добро Пожаловать В Деканат</h2>
+    <h3><?= $message ?? ''; ?></h3>
+</div>
 
 <h3><?= app()->auth->user()->name ?? ''; ?></h3>
 <?php
 if (!app()->auth::check()):
     ?>
     <form method="post">
-        <label>Логин <input type="text" name="login"></label>
-        <label>Пароль <input type="password" name="password"></label>
+        <label><input type="text" placeholder="Логин" name="login"></label>
+        <label><input type="password" placeholder="Пароль" name="password"></label>
         <button>Войти</button>
     </form>
+
+    <img src="/pop-it-mvc/public/img/image 1.png" alt="photo">
 <?php endif;
