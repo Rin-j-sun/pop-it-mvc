@@ -1,9 +1,10 @@
 <head>
     <link rel="stylesheet" href="/pop-it-mvc/public/style/hello.css">
-    <link rel="stylesheet" href="/pop-it-mvc/public/style/admin/admin.css">
+    <link rel="stylesheet" href="/pop-it-mvc/public/style/employees/add_employees.css">
 </head>
 
 <div class="add_employe">
+    <div class="employees_block"></div>
     <div class="add_employe_content">
         <h2>Добавить сотрудника</h2>
         <h3><?= $message ?? ''; ?></h3>
