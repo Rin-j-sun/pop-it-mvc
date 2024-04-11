@@ -1,21 +1,28 @@
+<head>
+    <link rel="stylesheet" href="/pop-it-mvc/public/style/hello.css">
+    <link rel="stylesheet" href="/pop-it-mvc/public/style/employees/add_students.css">
+</head>
+
+
 <div class="add_students_content">
+    <div class="students_block"></div>
     <div class="add_students_content_block">
-        <h2>Добавление нового студента</h2>
-        <form method="post" class="form_add_students">
-            <div class="fields_form_add_students">
-                <input class="field_add_student" type="text" name="last_name" placeholder="Фамилия">
-                <input class="field_add_student" type="text" name="name" placeholder="Имя">
-                <input class="field_add_student" type="text" name="patronymic" placeholder="Отчество">
-                <div class="small_fields_row">
-                    <select class="field_add_student_small">
+        <h2>Добавить студента</h2>
+        <form method="post">
+            <div class="form_add_student">
+                <input class="add_student_field" type="text" name="last_name" placeholder="Фамилия">
+                <input class="add_student_field" type="text" name="name" placeholder="Имя">
+                <input class="add_student_field" type="text" name="patronymic" placeholder="Отчество">
+                <div class="spisok">
+                    <select class="spisok_add_student">
                         <option value="">Пол</option>
                         <option value="man">Мужской</option>
                         <option value="woman">Женский</option>
                     </select>
-                    <input class="field_add_student_small" type="date" placeholder="Дата">
+                    <input class="spisok_add_student" type="date" placeholder="Дата">
                 </div>
-                <input class="field_add_student" type="text" name="address" placeholder="Адрес прописки">
-                <select class="field_add_student">
+                <input class="add_student_field" type="text" name="address" placeholder="Адрес прописки">
+                <select class="add_student_field">
                     <option value="">Группа</option>
                     <option value="453">112</option>
                     <option value="421">421</option>

@@ -1,0 +1,87 @@
+.add_students_content{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+.students_block{
+    background-color: gray;
+    min-width: 30%;
+    min-height: 40%;
+    margin-left: 2%;
+}
+
+.add_students_content_block{
+    display: flex;
+    flex-direction: column;
+    margin-left: 17%;
+
+}
+
+h2{
+    font-size: 25px;
+    margin-left: 16%;
+    margin-top: 2%;
+}
+
+.form_add_student{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.add_student_field{
+    width: 350px;
+    height: 40px;
+    border-radius: 50px;
+    border: 2px solid #EC9704;
+    background-color: bisque;
+    margin-top: 10%;
+    padding: 0.375rem 0.75rem;
+}
+
+.spisok{
+    display: flex;
+    flex-direction: row;
+    gap: 30%;
+    margin-top: 37px;
+}
+.spisok_add_student{
+    border-radius: 50px;
+    border: 2px solid #EC9704;
+    background-color: bisque;
+    width: 100%;
+}
+
+label{
+    margin-right: 10px;
+}
+
+input::placeholder {
+    color: #212529;
+    opacity: 0.4;
+}
+
+input:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #EC9704;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem #EC9704;
+}
+
+button{
+    border: #EC9704 2px solid;
+    border-radius: 50px;
+    width: 210px;
+    height: 56px;
+    color: #EC9704;
+    background-color: white;
+    margin-top: 5%;
+    margin-bottom: 10%;
+}
+
+.button_add_student{
+    margin-left: 20%;
+}
