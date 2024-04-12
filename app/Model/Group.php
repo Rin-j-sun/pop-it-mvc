@@ -16,6 +16,6 @@ class Group  extends Model
         'name',
     ];
 
-    public $table = 'groups_students';
+    public $table = 'students_groupe';
 
 }
