@@ -60,7 +60,7 @@ class Auth
     //Проверка, то что роль пользователя-админ
     public static function checkRole(): bool
     {
-        $userRole = self::user()::where('id', '=', $_SESSION['id'])->first()->id_role;
+        $userRole = self::user()::where('id', '=', $_SESSION['id'])->first()->role_id;
         if ($userRole === 5) return true;
         else return false;
     }
