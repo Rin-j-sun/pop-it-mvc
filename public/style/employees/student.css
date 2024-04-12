@@ -1,0 +1,22 @@
+main{
+    min-width: 500px;
+}
+
+.student_block{
+    margin-top: 5%;
+    margin-left: 5%;
+}
+
+.studentcontent_block{
+    display: flex;
+    flex-direction: column;
+    margin-left: 40%;
+}
+
+
+.button_student_inf{
+    display: flex;
+    flex-direction: row;
+    gap: 3%;
+    margin-left: 10%;
+}
