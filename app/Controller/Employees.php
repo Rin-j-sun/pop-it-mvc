@@ -60,4 +60,20 @@ class Employees
     {
         return new View('employees.student');
     }
+
+    public function addDisciplineGroupe(Request $request): string
+    {
+        return new View('employees.add_discipline_groupe');
+    }
+
+    public function groupInf(Request $request): string
+    {
+        return new View('employees.groupInf');
+    }
+
+    public function addMark(Request $request): string
+    {
+        return new View('employees.addMark');
+    }
 }
+
