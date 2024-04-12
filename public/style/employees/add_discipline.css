@@ -1,3 +1,7 @@
+main{
+    min-height: 610px;
+}
+
 .add_discipline_content{
     display: flex;
     flex-direction: row;

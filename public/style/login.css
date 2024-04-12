@@ -1,7 +1,11 @@
+.hello_content{
+    margin-top: 8%;
+}
+
 .inf_text{
     font-size: 30px;
     color: #583E26;
-    margin-left: 27%;
+    margin-left: 35%;
     margin-top: 3%;
 }
 
@@ -52,6 +56,6 @@ button{
 
 img{
     position: absolute;
-    margin-left: 36%;
+    margin-left: 40%;
     margin-top: -10%;
 }

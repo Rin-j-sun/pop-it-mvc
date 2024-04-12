@@ -10,15 +10,11 @@ a{
     text-decoration: none;
 }
 
-body{
-
-}
-
 
 .photo_bell{
     width: 30px;
     height: 30px;
-    margin-left: 50%;
+    margin-left: 60%;
     margin-top: 1%;
 }
 
@@ -85,7 +81,7 @@ nav{
 
 
 main{
-    min-height: 495px;
+    min-height: 610px;
 }
 
 .footer{
@@ -98,10 +94,10 @@ main{
 }
 
 .owl{
-    width: 50px;
-    height: 40px;
+    width: 40px;
+    height: 30px;
 }
 .students{
-    width: 50px;
-    height: 40px;
+    width: 40px;
+    height: 30px;
 }
