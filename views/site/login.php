@@ -2,6 +2,7 @@
     <link rel="stylesheet" href="/pop-it-mvc/public/style/login.css">
 </head>
 
+<div class="hello_content">
 <div class = "inf_text">
     <h2>Добро Пожаловать В Деканат</h2>
     <h3><?= $message ?? ''; ?></h3>
@@ -18,4 +19,5 @@ if (!app()->auth::check()):
     </form>
 
     <img src="/pop-it-mvc/public/img/image 1.png" alt="photo">
+</div>
 <?php endif;
