@@ -33,8 +33,9 @@ if (!app()->auth::check()):
                     <h1 class = "h_sotr">Деканат</h1>
                     <div class="nav_button_groupe">
                         <a href="<?= app()->route->getUrl('/addDiscipline') ?>"><button class = "nav_button">Дисциплины</button></a>
+                        <a href="<?= app()->route->getUrl('/groups') ?>"><button class = "nav_button">Группы</button></a>
                         <a href="<?= app()->route->getUrl('/addStudents') ?>"><button class = "nav_button">Студенты</button></a>
-                        <a href="<?= app()->route->getUrl('/employees') ?>"><button class = "nav_button">Успеваемость</button></a>
+                        <a href="<?= app()->route->getUrl('/gradeStudents') ?>"><button class = "nav_button">Успеваемость</button></a>
                         <a href="<?= app()->route->getUrl('/hello') ?>"><button class = "nav_button">Личный кабинет</button></a>
                         <a href="<?= app()->route->getUrl('/logout') ?>"><button class = "nav_button">Выход</button></a>
                     </div>

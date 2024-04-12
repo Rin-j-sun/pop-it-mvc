@@ -1,11 +1,11 @@
 <head>
     <link rel="stylesheet" href="/pop-it-mvc/public/style/hello.css">
-    <link rel="stylesheet" href="/pop-it-mvc/public/style/employees/add_groupe.css">
+    <link rel="stylesheet" href="/pop-it-mvc/public/style/employees/add_group.css">
 </head>
 
 
-<div class="add_discipline_content">
-    <div class="discipline_block"></div>
+<div class="add_group_content">
+    <div class="group_block"></div>
     <div class="add_group_content_block">
         <h2>Добавить группу</h2>
             <form method="post">
