@@ -1,5 +1,9 @@
 <?php
 
+namespace Validators;
+
+use Src\Validator\AbstractValidator;
+
 //Валидация длины заполнения полей
 class LengthValidator extends AbstractValidator
 {

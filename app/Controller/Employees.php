@@ -5,6 +5,10 @@ namespace Controller;
 use Model\Disciplines;
 use Model\StudentsGroupe;
 use Model\Student;
+use Model\TypeOfControl;
+use Model\GroupeGrade;
+use Model\GroupeDisciplines;
+use Model\Evaluations;
 use Src\Validator\Validator;
 use Src\View;
 use Src\Request;
@@ -15,61 +19,40 @@ class Employees
     //    Добавление студентов
     public function addStudents(Request $request): string
     {
+        $select_groups = StudentsGroupe::all();
         if ($request->method === 'POST') {
-            $validator = new Validator($request->all(), [
-                'surname' => ['required', 'unique:students,surname'],
-                'name' => ['required', 'unique:students,gname'],
-                'patronymic' => ['required', 'unique:students,patronymic'],
-                'gender' => ['required', 'unique:students,gender'],
-                'birthdate' => ['required', 'unique:students,birthdate'],
-                'adress' => ['required', 'unique:students,adress'],
-
-            ], [
-                'required' => 'Поле :field пусто',
-                'unique' => 'Поле :field должно быть уникально'
-            ]);
-
-            if($validator->fails()){
-                return new View('employees.add_students', ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            $data = $request->all();
+            $studentsGroup = StudentsGroupe::find($data['id_group']);
+            if ($studentsGroup) {
+                Student::create([
+                    'surname' => $data['surname'],
+                    'name' => $data['name'],
+                    'patronymic' => $data['patronymic'],
+                    'gender' => $data['gender'],
+                    'date' => $data['date'],
+                    'adress' => $data['adress'],
+                    'users_groupe' => $studentsGroup->id
+                ]);
+                app()->route->redirect('/students');
             }
-
-            $student = new Student();
-            $student->surname = $request->surname;
-            $student->name = $request->name;
-            $student->patronymic = $request->patronymic;
-            $student->gender = $request->gender;
-            $student->birthdate = $request->birthdate;
-            $student->adress = $request->adress;
-            $student->save();
-
-            return app()->route->redirect('/add_students');
         }
 
-        return new View('employees.add_students');
+        return new View('employees.add_students', ['select_groups' => $select_groups]);
     }
 
 //    Добавление групп
     public function addGroup(Request $request): string{
 
         if ($request->method === 'POST') {
-            $validator = new Validator($request->all(), [
-                'group_name' => ['required', 'unique:students_groupe,group_name'],
-            ], [
-                'required' => 'Поле :field пусто',
-                'unique' => 'Поле :field должно быть уникально'
-            ]);
-
-            if($validator->fails()){
-                return new View('employees.add_group', ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            $data = $request->all();
+            $studentsGroup = StudentsGroupe::all();
+            if ($studentsGroup) {
+                StudentsGroupe::create([
+                    'group_name' => $data['group_name'],
+                ]);
+                app()->route->redirect('/add_group');
             }
-
-            $studentsGroup = new StudentsGroup();
-            $studentsGroup->group_name = $request->group_name;
-            $studentsGroup->save();
-
-            return app()->route->redirect('/groups');
         }
-
         return new View('employees.add_group');
     }
 
@@ -77,48 +60,44 @@ class Employees
     public function addDiscipline(Request $request): string
     {
         if ($request->method === 'POST') {
-            $validator = new Validator($request->all(), [
-                'discipline_name' => ['required', 'exists:discipline,discipline_name'],
-            ], [
-                'required' => 'Поле :field пусто',
-                'exists' => 'Выбранная :field не существует',
-            ]);
-
-            if($validator->fails()){
-                return new View('employees.add_discipline', ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            $data = $request->all();
+            $disciplines = Disciplines::all();
+            if ($disciplines) {
+                Disciplines::create([
+                    'discipline_name' => $data['discipline_name'],
+                ]);
+                app()->route->redirect('/add_discipline');
             }
-
-            $disciplines = new Disciplines();
-            $disciplines->discipline_name = $request->discipline_name;
-            $disciplines->save();
-
-            return app()->route->redirect('/addDiscipline');
         }
 
         return new View('employees.add_discipline');
     }
 
     public function addDisciplineGroupe(Request $request): string{
+        $groupId = $request->id;
+        $discipline_name=Disciplines::all();
+        $type_of_control_name=TypeOfControl::all();
+        $group = GroupeDisciplines::where('id_group', $request->id)->get();
         if ($request->method === 'POST') {
-            $validator = new Validator($request->all(), [
-                'group_name' => ['required', 'exists:students_groupe,group_name'],
-                'discipline_name' => ['required', 'exists:discipline,discipline_name'],
-            ], [
-                'required' => 'Поле :field пусто',
-                'exists' => 'Выбранная :field не существует',
-            ]);
-
-            if($validator->fails()){
-                return new View('employees.add_discipline_groupe', ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+            $data = $request->all();
+            $group = StudentsGroupe::find($data['group_id']);
+            $discipline_id = Disciplines::where('name', $data['discipline_name'])->first();
+            $id_control = TypeOfControl::where('name', $data['type_of_control_name'])->first();
+            if ($group && $id_control && $discipline_id) {
+                GroupeDisciplines::create([
+                    'group_id' => $group->id,
+                    'discipline_id' => $discipline_id->id,
+                    'type_of_control_id' => $id_control->id,
+                    'number_of_hours' => $data['num_hours'],
+                    'cource' => $data['course'],
+                    'semester' => $data['semester']
+                ]);
+                app()->route->redirect('/groups');
             }
-
-            $disciplineGroup = new DisciplineGroup();
-            $disciplineGroup->group_name = $request->group_name;
-            $disciplineGroup->discipline_name = $request->discipline_name;
-            $disciplineGroup->save();
-
-            return app()->route->redirect('/addDisciplineGroupe');
         }
+        $groupName = StudentsGroupe::find($groupId)->name;
+        return new View('employees.group', ['group' => $group, 'discipline_name'=>$discipline_name,'type_of_control_name'=>$type_of_control_name, 'groupName' => $groupName, 'groupId' => $groupId, ]);
+
 
         return new View('employees.add_discipline_groupe');
     }
@@ -132,7 +111,8 @@ class Employees
 
 // Просмотр групп
     public function groups(Request $request): string {
-        $groups = StudentsGroupe::select('group_name')->get(); // Выборка только столбца group_name
+        // Показ только столбца наименований группы
+        $groups = StudentsGroupe::select('group_name')->get();
         return new View('employees.groups', ['groups' => $groups]);
     }
 

@@ -2,6 +2,8 @@
 
 namespace Validators;
 
+use \Validators\LengthValidator;
+
 
 //Валидация длины поля логин
 class PasswordLengthValidator extends LengthValidator

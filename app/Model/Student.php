@@ -19,6 +19,7 @@ class Student  extends Model
         'gender',
         'birthdate',
         'adress',
+        'users_groupe'
         ];
 
     public function group() {

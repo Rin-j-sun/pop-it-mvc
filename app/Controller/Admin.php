@@ -12,14 +12,16 @@ class Admin
 {
     public function addEmployees(Request $request): string
     {
-        if ($request->method === 'POST' && User::create($request->all())) {
+        if ($request->method === 'POST') {
 
             $validator = new Validator($request->all(), [
-                'login' => ['required', 'unique:users,login'],
-                'password' => ['required']
+                'login' => ['required', 'unique:users,login', 'UsernameLengthValidator::users,login'],
+                'password' => ['required', 'PasswordComplexityValidator::users,password', 'PasswordLengthValidator::users,password']
             ], [
                 'required' => 'Поле :field пусто',
-                'unique' => 'Поле :field должно быть уникально'
+                'unique' => 'Поле :field должно быть уникально',
+                'PasswordLengthValidator'=>'Логин должен быть минимум 5 символов',
+                'PasswordComplexityValidator'=>'Поле :field использует кириллицу',
             ]);
 
             if($validator->fails()){
