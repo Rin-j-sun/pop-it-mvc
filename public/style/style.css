@@ -1,0 +1,103 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: 0;
+}
+
+a{
+    color: #3C2702;
+    text-decoration: none;
+}
+
+
+.photo_bell{
+    width: 30px;
+    height: 30px;
+    margin-left: 60%;
+    margin-top: 1%;
+}
+
+.photo_profile{
+    width: 120px;
+    height: 120px;
+    margin-left: 2%;
+    margin-bottom: 2%;
+}
+
+h1{
+    font-size: 30px;
+    color: #583E26;
+}
+
+.h_admin{
+    margin-left: -15%;
+}
+
+.h_sotr{
+    margin-left: -13%;
+    margin-right: -25%;
+}
+
+nav{
+    background-color: #C8981B;
+    height: 90px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.nav_button{
+    border: #3C2702 2px solid;
+    border-radius: 50px;
+    width: 135px;
+    height: 45px;
+    color: #3C2702;
+    background-color: white;
+    margin-right: 50px;
+}
+.nav_button:last-child{
+    border: #3C2702 2px solid;
+    border-radius: 50px;
+    width: 135px;
+    height: 45px;
+    color: #3C2702;
+    background-color: #D9D9D9;
+    margin-left: 60%;
+}
+
+.nav_button_groupe{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: center;
+    margin-right: -10%;
+}
+
+.nav_button:active{
+    background-color: #3A3030;
+}
+
+
+main{
+    min-height: 610px;
+}
+
+.footer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: #C8981B;
+    height: 90px;
+    align-items: center;
+}
+
+.owl{
+    width: 40px;
+    height: 30px;
+}
+.students{
+    width: 40px;
+    height: 30px;
+}
