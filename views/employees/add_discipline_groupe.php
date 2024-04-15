@@ -12,12 +12,20 @@
             <div class="spisok_add_group_add">
                 <select class="spisok_add_group_add_discipline">
                     <option value="">№ группы</option>
-                    <option value="man">421</option>
-                    <option value="woman">666</option>
-                    <option value="woman">934</option>
-                    <option value="woman">654</option>
+                    <?php
+                    foreach ($select_groups as $select_group){
+                        echo "<option value=\"$select_group->id\">$select_group->name</option>";
+                    }
+                    ?>
                 </select>
-                <input class="add_group_add_discipline" type="text" name="name" placeholder="Имя">
+                <select class="spisok_add_group_add_discipline">
+                    <option value="">Название дисциплины</option>
+                    <?php
+                    foreach ($select_groups as $select_group){
+                        echo "<option value=\"$select_group->id\">$select_group->name</option>";
+                    }
+                    ?>
+                </select>
             </div>
             <button class="button_add_group_add">Добавить</button>
         </form>

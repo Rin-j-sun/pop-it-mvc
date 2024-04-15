@@ -16,13 +16,13 @@ use Model\User;
 
 class Employees
 {
-    //    Добавление студентов
+    //    Добавление студентов готово
     public function addStudents(Request $request): string
     {
         $select_groups = StudentsGroupe::all();
         if ($request->method === 'POST') {
             $data = $request->all();
-            $studentsGroup = StudentsGroupe::find($data['id']);
+            $studentsGroup = StudentsGroupe::find($data['group_id']);
             var_dump($data, $data['id'], $studentsGroup);
             if ($studentsGroup) {
                 Student::create([
@@ -30,11 +30,11 @@ class Employees
                     'name' => $data['name'],
                     'patronymic' => $data['patronymic'],
                     'gender' => $data['gender'],
-                    'date' => $data['date'],
+                    'birthdate' => $data['birthdate'],
                     'adress' => $data['adress'],
                     'users_groupe' => $studentsGroup->id
                 ]);
-                app()->route->redirect('/students');
+                app()->route->redirect('/addStudents');
             }
         };
         return new View('employees.add_students', ['select_groups' => $select_groups]);
@@ -73,6 +73,7 @@ class Employees
         return new View('employees.add_discipline');
     }
 
+//    Добавление дисциплины к группе
     public function addDisciplineGroupe(Request $request): string{
         $groupId = $request->id;
         $discipline_name=Disciplines::all();
