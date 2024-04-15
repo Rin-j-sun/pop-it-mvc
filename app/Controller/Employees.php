@@ -22,7 +22,8 @@ class Employees
         $select_groups = StudentsGroupe::all();
         if ($request->method === 'POST') {
             $data = $request->all();
-            $studentsGroup = StudentsGroupe::find($data['id_group']);
+            $studentsGroup = StudentsGroupe::find($data['id']);
+            var_dump($data, $data['id'], $studentsGroup);
             if ($studentsGroup) {
                 Student::create([
                     'surname' => $data['surname'],
@@ -35,12 +36,11 @@ class Employees
                 ]);
                 app()->route->redirect('/students');
             }
-        }
-
+        };
         return new View('employees.add_students', ['select_groups' => $select_groups]);
     }
 
-//    Добавление групп
+//    Добавление групп работает
     public function addGroup(Request $request): string{
 
         if ($request->method === 'POST') {
@@ -50,13 +50,13 @@ class Employees
                 StudentsGroupe::create([
                     'group_name' => $data['group_name'],
                 ]);
-                app()->route->redirect('/add_group');
+                app()->route->redirect('/addGroup');
             }
         }
         return new View('employees.add_group');
     }
 
-//    Добавление дисциплин
+//    Добавление дисциплин работает
     public function addDiscipline(Request $request): string
     {
         if ($request->method === 'POST') {
@@ -66,7 +66,7 @@ class Employees
                 Disciplines::create([
                     'discipline_name' => $data['discipline_name'],
                 ]);
-                app()->route->redirect('/add_discipline');
+                app()->route->redirect('/addDiscipline');
             }
         }
 
@@ -92,7 +92,7 @@ class Employees
                     'cource' => $data['course'],
                     'semester' => $data['semester']
                 ]);
-                app()->route->redirect('/groups');
+                app()->route->redirect('/addDisciplineGroupe');
             }
         }
         $groupName = StudentsGroupe::find($groupId)->name;

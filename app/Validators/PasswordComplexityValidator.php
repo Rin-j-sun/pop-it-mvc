@@ -4,7 +4,7 @@ namespace Validators;
 
 use Src\Validator\AbstractValidator;
 
-//валидатор на сложность пароля
+//валидатор на сложность пароля(но пока только на раскладку)
 class PasswordComplexityValidator extends AbstractValidator
 {
 
