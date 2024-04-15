@@ -20,10 +20,10 @@ class Employees
     public function addStudents(Request $request): string
     {
         $select_groups = StudentsGroupe::all();
+        $select_students = Student::all();
         if ($request->method === 'POST') {
             $data = $request->all();
             $studentsGroup = StudentsGroupe::find($data['group_id']);
-            var_dump($data, $data['id'], $studentsGroup);
             if ($studentsGroup) {
                 Student::create([
                     'surname' => $data['surname'],
@@ -37,11 +37,13 @@ class Employees
                 app()->route->redirect('/addStudents');
             }
         };
-        return new View('employees.add_students', ['select_groups' => $select_groups]);
+        return new View('employees.add_students', ['select_groups' => $select_groups, 'select_students' => $select_students]);
     }
 
 //    Добавление групп работает
     public function addGroup(Request $request): string{
+
+        $select_groups = StudentsGroupe::all();
 
         if ($request->method === 'POST') {
             $data = $request->all();
@@ -53,12 +55,13 @@ class Employees
                 app()->route->redirect('/addGroup');
             }
         }
-        return new View('employees.add_group');
+        return new View('employees.add_group', ['select_groups' => $select_groups]);
     }
 
 //    Добавление дисциплин работает
     public function addDiscipline(Request $request): string
     {
+        $select_disciplines = Disciplines::all();
         if ($request->method === 'POST') {
             $data = $request->all();
             $disciplines = Disciplines::all();
@@ -70,37 +73,31 @@ class Employees
             }
         }
 
-        return new View('employees.add_discipline');
+        return new View('employees.add_discipline',  ['select_disciplines' => $select_disciplines]);
     }
 
-//    Добавление дисциплины к группе
+//    Добавление дисциплины к группе работает
     public function addDisciplineGroupe(Request $request): string{
-        $groupId = $request->id;
+
+        $select_groups = StudentsGroupe::all();
         $discipline_name=Disciplines::all();
         $type_of_control_name=TypeOfControl::all();
-        $group = GroupeDisciplines::where('id_group', $request->id)->get();
         if ($request->method === 'POST') {
             $data = $request->all();
-            $group = StudentsGroupe::find($data['group_id']);
-            $discipline_id = Disciplines::where('name', $data['discipline_name'])->first();
-            $id_control = TypeOfControl::where('name', $data['type_of_control_name'])->first();
-            if ($group && $id_control && $discipline_id) {
+            $studentsGroup = StudentsGroupe::find($data['group_name']);
+            $discipline_id = Disciplines::where('discipline_name', $data['discipline_name'])->first();
+            $type_of_control_id = TypeOfControl::where('type_of_control_name', $data['type_of_control_name'])->first();
                 GroupeDisciplines::create([
-                    'group_id' => $group->id,
-                    'discipline_id' => $discipline_id->id,
-                    'type_of_control_id' => $id_control->id,
-                    'number_of_hours' => $data['num_hours'],
-                    'cource' => $data['course'],
+                    'group_id' => $studentsGroup->id,
+                    'discipline_id' => $discipline_id->discipline_id,
+                    'type_of_control_id' => $type_of_control_id->type_of_control_id,
+                    'number_of_hours' => $data['number_of_hours'],
+                    'cource' => $data['cource'],
                     'semester' => $data['semester']
                 ]);
-                app()->route->redirect('/addDisciplineGroupe');
-            }
         }
-        $groupName = StudentsGroupe::find($groupId)->name;
-        return new View('employees.group', ['group' => $group, 'discipline_name'=>$discipline_name,'type_of_control_name'=>$type_of_control_name, 'groupName' => $groupName, 'groupId' => $groupId, ]);
+        return new View('employees.add_discipline_groupe', ['select_groups' => $select_groups, 'discipline_name'=>$discipline_name,'type_of_control_name'=>$type_of_control_name]);
 
-
-        return new View('employees.add_discipline_groupe');
     }
 
 //Просмотр студентов
@@ -112,9 +109,7 @@ class Employees
 
 // Просмотр групп
     public function groups(Request $request): string {
-        // Показ только столбца наименований группы
-        $groups = StudentsGroupe::select('group_name')->get();
-        return new View('employees.groups', ['groups' => $groups]);
+        return new View('employees.groups');
     }
 
 //    Просмотр дисциплин
@@ -124,10 +119,47 @@ class Employees
         return new View('employees.disciplines');
     }
 
-//    Успеваемость студентов
-    public function gradeStudents(Request $request): string
+//    Успеваемость студентов фильтрация
+    public function gradeStudents(Request $request, $gradesQuery): string
     {
-        return new View('employees.grade_students');
+        $select_groups = StudentsGroupe::all();
+        $discipline_name=Disciplines::all();
+        $select_students = Student::all();
+        $grades = $gradesQuery->get();
+        $gradeList = [];
+        $notEmpty=false;
+        foreach ($grades as $grade) {
+            // Если есть оценка, добавляем информацию о студенте, группе, дисциплине и оценке
+            if ($grade->evaluations) {
+                $studentName = $grade->student->surname . ' ' . $grade->student->name . ' ' . $grade->student->patronymic;
+                $groupName = $grade->disciplinesGroup->info_group->name;
+                $disciplineName = $grade->disciplinesGroup->discipline->name;
+                $evaluation = $grade->evaluations->evaluation;
+
+                $gradeList[] = [
+                    'student' => $studentName,
+                    'group' => $groupName,
+                    'discipline' => $disciplineName,
+                    'evaluation' => $evaluation
+                ];
+                $notEmpty=true;
+            }
+        }
+        if (empty($gradeList)) {
+            return new View('employees.grade_students', [
+                'select_group' => $select_group,
+                'discipline_name' => $discipline_name,
+                'notEmpty'=>$notEmpty
+            ]);
+        }
+        return new View('employees.grade_students', [
+            'gradeList' => $gradeList,
+            'select_group' => $select_group,
+            'discipline_name' => $discipline_names,
+            'notEmpty'=>$notEmpty
+        ]);
+
+       return new View('employees.grade_students' , ['select_students' => $select_students, 'select_groups' => $select_groups, 'discipline_name'=>$discipline_name, 'select_groups' => $select_groups]);
     }
 
     //    Страница студента

@@ -29,6 +29,7 @@ button{
     display: flex;
     flex-direction: row;
     gap: 35px;
+    margin-top: 5%;
 }
 
 h2{
