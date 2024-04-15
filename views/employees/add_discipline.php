@@ -6,7 +6,16 @@
 <!--Готово-->
 
 <div class="add_discipline_content">
-    <div class="discipline_block"></div>
+    <div class="discipline_block">
+        <div class="disciplines_spisok">
+        <h3>Список дисциплин :</h3>
+        <?php
+        foreach ($select_disciplines as $select_disciplines){
+            echo "<a href='groups.php'><option value=\"$select_disciplines->id\">$select_disciplines->discipline_name</option></a>";
+        }
+        ?>
+        </div>
+    </div>
     <div class="add_discipline_content_block">
         <h2>Создать дисциплину</h2>
         <form method="post" class="add_discipline_form">

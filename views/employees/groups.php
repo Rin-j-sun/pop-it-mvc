@@ -4,18 +4,20 @@
 </head>
 
 <div class="groups_content">
-    <p class="groups_block">
-        <a href="<?= app()->route->getUrl('/groupInf') ?>"> <?php
-            foreach ($select_groups as $select_group){
-                echo "<option value=\"$select_group->id\">$select_group->group_name</option>";
-            }
-            ?></a>
-    </div>
-    <div class="group_content_block">
+        <div class="group_content_block">
         <h2>Работа с группами </h2>
 <div class="button_add_group">
     <a href="<?= app()->route->getUrl('/addDisciplineGroupe') ?>"><button>Добавить дисциплину</button></a>
     <a href="<?= app()->route->getUrl('/addGroup') ?>"><button>Добавить группу</button></a>
 </div>
+            <div class="groups_spisok">
+<!--                реализовать переход на groupInf-->
+                <h3>Список групп :</h3>
+                <?php
+                foreach ($select_groups as $select_group){
+                    echo "<option value=\"$select_group->id\">$select_group->group_name</option>";
+                }
+                ?>
+            </div>
     </div>
 </div>

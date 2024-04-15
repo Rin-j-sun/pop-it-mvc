@@ -5,7 +5,16 @@
 
 
 <div class="add_students_content">
-    <div class="students_block"></div>
+    <div class="students_block">
+        <div class="students_spisok">
+        <h3>Список студентов</h3>
+        <?php
+        foreach ($select_students as $select_students){
+            echo "<a href='groups.php'><option value=\"$select_students->id\">$select_students->surname $select_students->name $select_students->patronymic</option></a>";
+        }
+        ?>
+    </div>
+    </div>
     <div class="add_students_content_block">
         <h2>Добавить студента</h2>
         <form method="post">
@@ -26,7 +35,6 @@
                 <select name="group_id" class="id">
                     <option value="">Группа</option>
                     <?php
-
                     foreach ($select_groups as $select_group){
                         echo "<option value=\"$select_group->id\">$select_group->group_name</option>";
                     }

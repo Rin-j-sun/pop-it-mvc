@@ -8,20 +8,9 @@
 <div class="students_filters">
     <div class="students_block">
         <p>Список дисциплин группы :</p>
-        <table>
-            <tr>
-                <th>Фио Студента</th>
-                <th>№ группы</th>
-                <th>Дисциплина</th>
-                <th>Оценка</th>
-            </tr>
-            <tr><td><a href="<?= app()->route->getUrl('/student') ?>">Сотникова Сабрина</a></td><td>421</td><td>Английский</td><td>3</td></tr>
-            <tr><td><a href="<?= app()->route->getUrl('/student') ?>">Сотникова Сабрина</a></td><td>421</td><td>Английский</td><td>3</td></tr>
-            <tr><td><a href="<?= app()->route->getUrl('/student') ?>">Сотникова Сабрина</a></td><td>421</td><td>Английский</td><td>3</td></tr>
-            <tr><td><a href="<?= app()->route->getUrl('/student') ?>">Сотникова Сабрина</a></td><td>421</td><td>Английский</td><td>3</td></tr>
-            <tr><td><a href="<?= app()->route->getUrl('/student') ?>">Сотникова Сабрина</a></td><td>421</td><td>Английский</td><td>3</td></tr>
-            <tr><td><a href="<?= app()->route->getUrl('/student') ?>">Сотникова Сабрина</a></td><td>421</td><td>Английский</td><td>3</td></tr>
-        </table>
+
+            <a href="<?= app()->route->getUrl('/student') ?>">Сотникова Сабрина</a>
+
 
     </div>
     <a class="filters">
