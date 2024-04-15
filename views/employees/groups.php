@@ -11,13 +11,12 @@
     <a href="<?= app()->route->getUrl('/addGroup') ?>"><button>Добавить группу</button></a>
 </div>
             <div class="groups_spisok">
-<!--                реализовать переход на groupInf-->
                 <h3>Список групп :</h3>
-                <?php
-                foreach ($select_groups as $select_group){
-                    echo "<option value=\"$select_group->id\">$select_group->group_name</option>";
-                }
-                ?>
+                <?php foreach ($select_groups as $select_group): ?>
+                    <?php $url = app()->route->getUrl('/groups/group?id=') . "$select_group->id"; ?>
+                    <a href="<?= $url ?>"><?= $select_group->group_name ?></a><br>
+                <?php endforeach; ?>
             </div>
-    </div>
+
+        </div>
 </div>

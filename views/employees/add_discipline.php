@@ -23,5 +23,7 @@
             <input class="add_discipline_field" type="text" name="discipline_name" placeholder="Название">
             <button class="add_discipline_button">Добавить</button>
         </form>
+
+        <a href="<?= app()->route->getUrl('/disciplinesSearch') ?>"><button>Поиск дисциплин</button></a>
     </div>
 </div>

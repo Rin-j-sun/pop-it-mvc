@@ -8,11 +8,13 @@
     <div class="students_block">
         <div class="students_spisok">
         <h3>Список студентов</h3>
-        <?php
-        foreach ($select_students as $select_students){
-            echo "<a href='groups.php'><option value=\"$select_students->id\">$select_students->surname $select_students->name $select_students->patronymic</option></a>";
-        }
-        ?>
+<!--            Успешное перенаправление-->
+            <?php
+            foreach ($select_students as $student) {
+                $url = app()->route->getUrl('/student') . "?id=$student->id"; // Assuming you want to pass student ID as a parameter
+                echo "<a href=\"$url\"><option value=\"$student->id\">" . $student->surname . " " . $student->name . " " . $student->patronymic . "</option></a>";
+            }
+            ?>
     </div>
     </div>
     <div class="add_students_content_block">
