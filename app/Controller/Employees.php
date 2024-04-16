@@ -236,7 +236,7 @@ class Employees
         return new View('employees.disciplines');
     }
 
-//    Успеваемость студентов фильтрация
+//    Успеваемость студентов фильтрация не работает
     public function gradeStudents(Request $request, $gradesQuery): string
     {
         $select_groups = StudentsGroupe::all();
@@ -300,7 +300,7 @@ class Employees
 }
 
 
-    //    Страница студента и его оценивания
+    //    Страница студента и его оценивания не работает
     public function vueStudent(Request $request): string
     {
         $select_students = Student::all();
@@ -308,7 +308,7 @@ class Employees
         return new View('employees.student');
     }
 
-    //    Страница студентов в группе
+    //    Страница студентов в группе не работает
     public function groupInf(Request $request): string
     {
         $groupId = $request->id;

@@ -2,18 +2,15 @@
 
 namespace Validators;
 
-use \Validators\LengthValidator;
+use Src\Validator\AbstractValidator;
 
-
-//Валидация длины поля логин
-class PasswordLengthValidator extends LengthValidator
+class PasswordLengthValidator extends AbstractValidator
 {
-    public function __construct()
+    protected string $message = 'Пароль должен содержать минимум 8 символов';
+
+    public function rule(): bool
     {
-        parent::__construct(8, 20);
+        $password = $this->value;
+        return strlen($password) >= 8;
     }
 }
-
-
-
-

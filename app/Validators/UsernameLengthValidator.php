@@ -2,14 +2,18 @@
 
 namespace Validators;
 
-use \Validators\LengthValidator;
+use Src\Validator\AbstractValidator;
 
 //Валидация длины поля логин
-class UsernameLengthValidator
+class UsernameLengthValidator extends AbstractValidator
 {
-    public function __construct()
+    protected string $message = 'Логин должен содержать от 5 до 8 символов';
+
+    public function rule(): bool
     {
-        parent::__construct(5, 8);
+        $loginLength = strlen($this->value);
+        return $loginLength >= 5 && $loginLength <= 8;
     }
 }
+
 
