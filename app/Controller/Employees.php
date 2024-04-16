@@ -16,7 +16,7 @@ use Model\User;
 
 class Employees
 {
-    //    Добавление студентов готово и валидаторы тоже
+    //    Добавление студентов готово и валидатор на кириллицу работает, но ломается столбец вывода студентов
     public function addStudents(Request $request): string
     {
         $select_groups = StudentsGroupe::all();
@@ -24,19 +24,22 @@ class Employees
 
         if ($request->method === 'POST') {
             $validator = new Validator($request->all(), [
-                'surname' => ['required'],
-                'name' => ['required'],
-                'patronymic' => ['required'],
+                'surname' => ['cyrillic','required:students,surname'],
+                'name' => ['cyrillic','required:students,name'],
+                'patronymic' => ['patronymic'],
                 'gender' => ['required'],
                 'birthdate' => ['required'],
-                'adress' => ['required'],
+                'adress' => ['cyrillic','required'],
                 'group_id' => ['required'],
             ], [
-                'required' => 'Поле :field пусто',
+                'required' => 'Поле :attribute пусто',
+                'cyrillic' => 'Поле :attribute должно содержать только кириллицу',
             ]);
 
             if ($validator->fails()) {
-                return new View('employees.add_students', ['select_groups' => $select_groups, 'select_students' => $select_students, 'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+                return new View('employees.add_students', [
+                    'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
+                ]);
             }
 
             $data = $request->all();
@@ -156,26 +159,48 @@ class Employees
 
 
 
-//    Добавление дисциплины к группе работает и валидатор тоже
+//    Добавление дисциплины к группе работает и валидатор уникальности дисциплины не работает
     public function addDisciplineGroupe(Request $request): string
     {
         // Получаем все группы, дисциплины и типы контроля
         $select_groups = StudentsGroupe::all();
         $discipline_name = Disciplines::all();
         $type_of_control_name = TypeOfControl::all();
+        $cource = GroupeDisciplines::all();
+        $semester = GroupeDisciplines::all();
+        $data = $request->all();
 
         // Проверяем, была ли отправлена форма методом POST
         if ($request->method === 'POST') {
             // Определяем правила валидации
             $validator = new Validator($request->all(), [
                 'group_name' => ['required'],
-                'discipline_name' => ['required'],
+                'discipline_name' => [
+                    function ($attribute, $value, $fail) use ($request) {
+                        // Проверка уникальности дисциплины для данной группы
+                        $groupId = $request->select('group_name');
+                        if (!empty($groupId)) {
+                            $exists = Capsule::table('groupe_disciplines')
+                                ->where('group_id', $groupId)
+                                ->where('discipline_id', $value)
+                                ->exists();
+
+                            if ($exists) {
+                                $fail('Такая дисциплина уже есть у группы');
+                            }
+                        }
+                    },
+                    'required',
+                ],
                 'type_of_control_name' => ['required'],
                 'number_of_hours' => ['required'],
-                'cource' => ['required'],
-                'semester' => ['required']
+                'cource' => ['required', 'course'],
+                'semester' => ['required', 'semester']
             ], [
-                'required' => 'Поле :attribute должно быть заполнено'
+                'required' => 'Поле :attribute должно быть заполнено',
+                'course' => 'Номер курса не может превышать 6',
+                'semester' => 'Номер семестра не может превышать 12',
+                'uniquenessDiscipline' => 'Такая дисциплина уже есть у группы',
             ]);
 
             // Если валидация не прошла, возвращаем страницу с ошибками валидации
@@ -184,6 +209,8 @@ class Employees
                     'select_groups' => $select_groups,
                     'discipline_name' => $discipline_name,
                     'type_of_control_name' => $type_of_control_name,
+                    'cource' => $cource,
+                    'semester' => $semester,
                     'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
                 ]);
             }
@@ -243,59 +270,14 @@ class Employees
         $discipline_name = Disciplines::all();
         $select_students = Student::all();
 
-        // Initialize query with eager loading relationships
-        $gradesQuery = $gradesQuery->with(['student', 'disciplinesGroup.info_group', 'disciplinesGroup.discipline', 'evaluations']);
 
-        // Apply filters if provided
-        if ($request->isMethod('post')) {
-            $groupId = $request->input('group_name');
-            $disciplineId = $request->input('discipline_name');
 
-            if ($groupId) {
-                $gradesQuery->whereHas('disciplinesGroup.info_group', function ($query) use ($groupId) {
-                    $query->where('group_id', $groupId);
-                });
-            }
-
-            if ($disciplineId) {
-                $gradesQuery->whereHas('disciplinesGroup.discipline', function ($query) use ($disciplineId) {
-                    $query->where('discipline_id', $disciplineId);
-                });
-            }
-        }
-
-        // Fetch filtered grades
-        $grades = $gradesQuery->get();
-
-        $gradeList = [];
-        $notEmpty = false;
-
-        // Build the list of grades
-        foreach ($grades as $grade) {
-            // If there's an evaluation, add information about the student, group, discipline, and evaluation
-            if ($grade->evaluations) {
-                $studentName = $grade->student->surname . ' ' . $grade->student->name . ' ' . $grade->student->patronymic;
-                $groupName = $grade->disciplinesGroup->info_group->name;
-                $disciplineName = $grade->disciplinesGroup->discipline->name;
-                $evaluation = $grade->evaluations->evaluation;
-
-                $gradeList[] = [
-                    'student' => $studentName,
-                    'group' => $groupName,
-                    'discipline' => $disciplineName,
-                    'evaluation' => $evaluation
-                ];
-                $notEmpty = true;
-            }
-        }
 
         // Pass data to the view for rendering
         return new View('employees.grade_students', [
-            'gradeList' => $gradeList,
             'select_students' => $select_students,
             'select_groups' => $select_groups,
             'discipline_name' => $discipline_name,
-            'notEmpty' => $notEmpty
         ]);
 }
 
@@ -304,8 +286,43 @@ class Employees
     public function vueStudent(Request $request): string
     {
         $select_students = Student::all();
-        $discipline_name=Disciplines::all();
-        return new View('employees.student');
+        $select_groups = StudentsGroupe::all();
+        $select_balls = Evaluations::all();
+        $discipline_name = Disciplines::all();
+
+        if ($request->method === 'POST') {
+            $validator = new Validator($request->all(), [
+                'discipline_name' => ['required'],
+                'ball' => ['required'],
+            ], [
+                'required' => 'Поле :attribute пусто',
+            ]);
+
+            if ($validator->fails()) {
+                return new View('employees.student', [
+                    'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
+                ]);
+            }
+
+            $data = $request->all();
+            $studentsGroup = StudentsGroupe::find($data['group_id']);
+            if ($studentsGroup) {
+                GroupeGrade::create([
+                    'groupe_discipline_id' => $data['groupe_discipline_id'],
+                    'evaluations_id' => $data['evaluations_id'],
+                    'data' => $data['data'],
+                    'student_id' => $data['student_id'],
+                ]);
+                app()->route->redirect('/student');
+            }
+        }
+
+        return new View('employees.student', [
+            'select_groups' => $select_groups,
+            'discipline_name' => $discipline_name,
+            'select_students' => $select_students,
+            'select_balls' => $select_balls,
+        ]);
     }
 
     //    Страница студентов в группе не работает
