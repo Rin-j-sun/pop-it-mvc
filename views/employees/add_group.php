@@ -19,6 +19,7 @@
 
     <div class="add_group_content_block">
         <h2>Добавить группу</h2>
+        <h3><?= $message ?? ''; ?></h3>
             <form method="post" class="add_group_form">
                 <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
                 <input class="field_add_group" type="number" name="group_name" placeholder="Название">

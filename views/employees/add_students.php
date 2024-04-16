@@ -19,6 +19,7 @@
     </div>
     <div class="add_students_content_block">
         <h2>Добавить студента</h2>
+        <h3><?= $message ?? ''; ?></h3>
         <form method="post">
             <div class="form_add_student">
                 <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>

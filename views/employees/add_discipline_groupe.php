@@ -7,6 +7,7 @@
 <div class="add_group_add_discipline_content">
     <div class="add_group_add_discipline_content_block">
         <h2>Добавить Дисциплину Группе</h2>
+        <h3><?= $message ?? ''; ?></h3>
         <form method="post" class="add_group_add_discipline_form">
             <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
             <div class="spisok_add_group_add">
