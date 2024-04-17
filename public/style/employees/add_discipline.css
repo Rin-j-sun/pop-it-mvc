@@ -90,3 +90,9 @@ button{
     margin-top: 17%;
 
 }
+
+.add_discipline_content_button{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}

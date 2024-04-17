@@ -38,7 +38,7 @@
                 </select>
 
                 <input class="add_discipline_field" type="text" name="number_of_hours" placeholder="Количество часов">
-                <input class="add_discipline_field" type="text" name="cource" placeholder="Курс">
+                <input class="add_discipline_field" type="text" name="course" placeholder="Курс">
                 <input class="add_discipline_field" type="text" name="semester" placeholder="Семестр">
 
             </div>

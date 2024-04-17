@@ -16,7 +16,7 @@ class GroupeDisciplines  extends Model
         'discipline_id',
         'type_of_control_id',
         'number_of_hours',
-        'cource',
+        'course',
         'semester'
     ];
 

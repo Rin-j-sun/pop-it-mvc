@@ -13,6 +13,7 @@ use Src\Validator\Validator;
 use Src\View;
 use Src\Request;
 use Model\User;
+use Carbon\Carbon;
 
 class Employees
 {
@@ -153,7 +154,7 @@ class Employees
         }
 
         // Return the view with the filtered disciplines and the message
-        return new View('employees.disciplines_search', ['select_disciplines' => $select_disciplines, 'message' => $message]);
+        return new View('employees.disciplines_search', ['select_disciplines' => $select_disciplines, 'message' => $message, 'request' => $request,]);
     }
 
 
@@ -166,7 +167,7 @@ class Employees
         $select_groups = StudentsGroupe::all();
         $discipline_name = Disciplines::all();
         $type_of_control_name = TypeOfControl::all();
-        $cource = GroupeDisciplines::all();
+        $course = GroupeDisciplines::all();
         $semester = GroupeDisciplines::all();
         $data = $request->all();
 
@@ -176,31 +177,16 @@ class Employees
             $validator = new Validator($request->all(), [
                 'group_name' => ['required'],
                 'discipline_name' => [
-                    function ($attribute, $value, $fail) use ($request) {
-                        // Проверка уникальности дисциплины для данной группы
-                        $groupId = $request->select('group_name');
-                        if (!empty($groupId)) {
-                            $exists = Capsule::table('groupe_disciplines')
-                                ->where('group_id', $groupId)
-                                ->where('discipline_id', $value)
-                                ->exists();
-
-                            if ($exists) {
-                                $fail('Такая дисциплина уже есть у группы');
-                            }
-                        }
-                    },
-                    'required',
+                   'required',
                 ],
                 'type_of_control_name' => ['required'],
                 'number_of_hours' => ['required'],
-                'cource' => ['required', 'course'],
+                'course' => ['required', 'course'],
                 'semester' => ['required', 'semester']
             ], [
                 'required' => 'Поле :attribute должно быть заполнено',
                 'course' => 'Номер курса не может превышать 6',
                 'semester' => 'Номер семестра не может превышать 12',
-                'uniquenessDiscipline' => 'Такая дисциплина уже есть у группы',
             ]);
 
             // Если валидация не прошла, возвращаем страницу с ошибками валидации
@@ -209,7 +195,7 @@ class Employees
                     'select_groups' => $select_groups,
                     'discipline_name' => $discipline_name,
                     'type_of_control_name' => $type_of_control_name,
-                    'cource' => $cource,
+                    'course' => $course,
                     'semester' => $semester,
                     'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
                 ]);
@@ -225,7 +211,7 @@ class Employees
                 'discipline_id' => $discipline_id->discipline_id,
                 'type_of_control_id' => $type_of_control_id->type_of_control_id,
                 'number_of_hours' => $data['number_of_hours'],
-                'cource' => $data['cource'],
+                'cource' => $data['course'],
                 'semester' => $data['semester']
             ]);
 
@@ -240,6 +226,7 @@ class Employees
             'type_of_control_name' => $type_of_control_name
         ]);
     }
+
 
 //Просмотр студентов
     public function students(Request $request): string
@@ -263,26 +250,87 @@ class Employees
         return new View('employees.disciplines');
     }
 
-//    Успеваемость студентов фильтрация не работает
-    public function gradeStudents(Request $request, $gradesQuery): string
+
+    public function disciplineFiltering(Request $request): string
     {
+        // Получаем данные из формы фильтров
+        $course = $request->get('course');
+        $semester = $request->get('semester');
+
+        // Получаем дисциплины из базы данных с учетом фильтров
+        $query = GroupeDisciplines::query();
+
+        // Фильтрация по курсу
+        if ($course) {
+            $query->where('course', $course);
+        }
+
+        // Фильтрация по семестру
+        if ($semester) {
+            $query->where('semester', $semester);
+        }
+
+        // Получаем отфильтрованные дисциплины
+        $select_disciplines = $query->get();
+
+        // Передаем данные в представление
+        return new View('employees.disciplineFiltering', [
+            'select_disciplines' => $select_disciplines,
+        ]);
+    }
+
+
+
+
+
+//    Фильтрация студентов по группам работает
+    public function gradeStudents(Request $request): string
+    {
+        // Получаем данные из формы фильтров
+        if ($request->method === 'POST') {
+            $groupId = $request->get('group_name');
+            $discipline = $request->get('discipline_name');
+        }
+
+        // Получаем студентов из базы данных с учетом фильтров
+        $query = Student::query();
+
+        // Фильтрация по группе, если выбрана группа
+        if ($groupId) {
+            $query->whereHas('group', function ($q) use ($groupId) {
+                $q->where('id', $groupId);
+            });
+        }
+
+        // Фильтрация по дисциплине, если выбрана дисциплина
+//        if ($discipline) {
+//            $query->whereHas('grades', function ($q) use ($discipline) {
+//                $q->where('discipline_name', $discipline);
+//            });
+//        }
+
+        // Получаем отфильтрованных студентов
+        $select_students = $query->get();
+
+        // Получаем все группы и дисциплины для отображения в форме фильтров
         $select_groups = StudentsGroupe::all();
         $discipline_name = Disciplines::all();
-        $select_students = Student::all();
 
-
-
-
-        // Pass data to the view for rendering
+        // Передаем данные в представление
         return new View('employees.grade_students', [
             'select_students' => $select_students,
             'select_groups' => $select_groups,
             'discipline_name' => $discipline_name,
         ]);
-}
+    }
 
 
-    //    Страница студента и его оценивания не работает
+
+
+
+
+
+    //    Страница студента и его оценивания не отправляется id студента
     public function vueStudent(Request $request): string
     {
         $select_students = Student::all();
@@ -303,18 +351,18 @@ class Employees
                     'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
                 ]);
             }
-
+            // Создание записи оценки на основе данных из формы
+            $currentDate = Carbon::now()->toDateTimeString();
             $data = $request->all();
-            $studentsGroup = StudentsGroupe::find($data['group_id']);
-            if ($studentsGroup) {
-                GroupeGrade::create([
-                    'groupe_discipline_id' => $data['groupe_discipline_id'],
-                    'evaluations_id' => $data['evaluations_id'],
-                    'data' => $data['data'],
-                    'student_id' => $data['student_id'],
-                ]);
-                app()->route->redirect('/student');
-            }
+            GroupeGrade::create([
+                'groupe_discipline_id' => $data['discipline_name'],
+                'evaluations_id' => $data['ball'],
+                'data' => $currentDate,
+                'student_id' => $data['student_id'],
+            ]);
+
+            // Перенаправление пользователя после успешного создания записи
+            return app()->route->redirect('/student');
         }
 
         return new View('employees.student', [
@@ -325,38 +373,23 @@ class Employees
         ]);
     }
 
+
     //    Страница студентов в группе не работает
     public function groupInf(Request $request): string
     {
-        $groupId = $request->id;
-        $group = StudentsGroupe::find($groupId);
-        $groupName = $group->name;
+        // Получаем id группы из запроса
+        $groupId = $request->get('id');
 
-        // Query to retrieve the list of disciplines for the group with optional filtering
-        $groupDisciplinesQuery = GroupeDisciplines::where('group_id', $request->id);
+        // Используем $groupId для получения информации о группе из базы данных
+        $studentsGroup = StudentsGroupe::find($groupId);
 
-        if ($request->getMethod() === 'POST') {
-            $semester = $request->get('semester');
-            $course = $request->get('course');
+        // Получаем список студентов для этой группы
+        $students = $studentsGroup->students;
 
-            if (!empty($semester)) {
-                $groupDisciplinesQuery->where('semester', $semester);
-            }
-            if (!empty($course)) {
-                $groupDisciplinesQuery->where('course', $course);
-            }
-        }
+        // Возвращаем представление с информацией о группе и списком студентов
+        return new View('employees.group_info', ['studentsGroup' => $studentsGroup, 'students' => $students]);
+    }
 
-        // Execute the query to get the list of group disciplines
-        $groupDisciplines = $groupDisciplinesQuery->get();
 
-        // Render the view with the fetched data
-        return new View('employees.group', [
-            'group' => $groupDisciplines,
-            'groupName' => $groupName,
-            'groupId' => $groupId,
-        ]);
-
-}
 
 }

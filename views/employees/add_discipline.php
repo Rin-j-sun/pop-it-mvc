@@ -25,6 +25,9 @@
             <button class="add_discipline_button">Добавить</button>
         </form>
 
+        <div class="add_discipline_content_button">
         <a href="<?= app()->route->getUrl('/disciplinesSearch') ?>"><button>Поиск дисциплин</button></a>
+        <a href="<?= app()->route->getUrl('/disciplineFiltering') ?>"><button>Фильтрация дисциплин</button></a>
+    </div>
     </div>
 </div>

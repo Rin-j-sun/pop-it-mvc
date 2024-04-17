@@ -36,6 +36,7 @@ else:
             <?php if ($images->isNotEmpty()): ?>
                 <?php foreach ($images as $image): ?>
                     <img src="/pop-it-mvc/public/img/<?= $image->name ?>" class="photo_profile" alt="Изображение">
+                <?php break; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
 
