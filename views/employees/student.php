@@ -1,29 +1,62 @@
 <head>
     <link rel="stylesheet" href="/pop-it-mvc/public/style/hello.css">
     <link rel="stylesheet" href="/pop-it-mvc/public/style/employees/student.css">
-    <link rel="stylesheet" href="/pop-it-mvc/public/style/employees/add_group.css">
-    <link rel="stylesheet" href="/pop-it-mvc/public/style/employees/grade_students.css">
 </head>
 
 
 <div class="student_content">
     <div class="student_block">
-        <table>
-            <tr>
-                <th>Фио Студента</th>
-                <th>№ группы</th>
-                <th>Дисциплина</th>
-                <th>Оценка</th>
-            </tr>
-            <tr><td><a href="<?= app()->route->getUrl('/student') ?>">Сотникова Сабрина</a></td><td><a href="<?= app()->route->getUrl('/groups') ?>">421</a></td><td><a href="<?= app()->route->getUrl('/addDiscipline') ?>">Английский</a></td><td>3</td></tr>
-        </table>
+        <h3>Студент :</h3>
+        <?php
+        // Получаем ID студента из адресной строки
+        $selectedStudentId = $_GET['id'] ?? null;
+
+        // Проверяем, существует ли ID студента
+        if ($selectedStudentId !== null) {
+            foreach ($select_students as $student) {
+                // Проверяем, соответствует ли ID студента ID, переданному в адресной строке
+                if ($student->id == $selectedStudentId) {
+                    $group = $student->group; // Получаем объект группы студента через связь
+                    if ($group) {
+                        $groupName = $group->group_name; // Получаем имя группы
+                        $url = app()->route->getUrl('/student') . "?id=$student->id"; // Предполагается, что вы хотите передать ID студента в качестве параметра
+                        echo "<a href=\"$url\">" . $student->surname . " " . $student->name . " " . $student->patronymic . " группа : " . $groupName . "</a>";
+                        break; // Выходим из цикла после первого совпадения
+                    }
+                }
+            }
+        } else {
+            echo "Студент не выбран"; // Либо другое действие в случае отсутствия ID студента
+        }
+        ?>
+
     </div>
     <div class="studentcontent_block">
-        <h2>Работа с группами </h2>
-        <div class="button_student_inf">
-            <a href="<?= app()->route->getUrl('/addGroup') ?>"><button>Посмотреть группы</button><a>
-            <a href="<?= app()->route->getUrl('/addGroup') ?>"><button>Добавить группу</button></a>
-        </div>
-</div>
+
+
+    <h3 class="stud_zag">Оценить студента</h3>
+        <form method="post" class="student_eval">
+            <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+            <input type="hidden" name="student_id" value="<?= $selectedStudentId ?>">
+            <h3 class="stud_zag">Выбрать дисциплину :</h3>
+            <select class="spisok_discipline" name="discipline_name">
+                <option value="">Дисциплина</option>
+                <?php foreach ($discipline_name as $discipline): ?>
+                    <option value="<?= $discipline->id ?>"><?= $discipline->discipline_name ?></option>
+                <?php endforeach; ?>
+            </select>
+
+            <h3 class="stud_zag">Выбрать оценку :</h3>
+            <select class="spisok_eval" name="ball">
+                <option value="">Оценка</option>
+                <?php foreach ($select_balls as $ball): ?>
+                    <option><?= $ball->balls ?></option>
+                <?php endforeach; ?>
+            </select>
+
+            <button class="button_students_eval">Оценить</button>
+        </form>
+
+
     </div>
 </div>
