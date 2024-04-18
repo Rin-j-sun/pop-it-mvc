@@ -20,4 +20,16 @@ class GroupeGrade  extends Model
 
     public $table = 'groupe_grade';
 
+    public function disciplinesGroup() {
+        return $this->belongsTo(GroupeDisciplines::class, 'groupe_discipline_id');
+    }
+
+    public function student() {
+        return $this->belongsTo(Student::class, 'student_id');
+    }
+
+    public function evaluations() {
+        return $this->belongsTo(Evaluations::class, 'evaluations_id');
+    }
+
 }

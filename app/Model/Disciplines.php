@@ -17,6 +17,7 @@ class Disciplines  extends Model
     ];
 
 
-    public $table = 'disciplines';
+    protected $table = 'disciplines';
 
+    protected $primaryKey = 'discipline_id';
 }

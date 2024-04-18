@@ -22,4 +22,18 @@ class GroupeDisciplines  extends Model
 
     public $table = 'groupe_disciplines';
 
+    public function discipline() {
+        return $this->belongsTo(Disciplines::class, 'discipline_id');
+    }
+
+    public function info_group() {
+        return $this->belongsTo(StudentsGroupe::class, 'group_id');
+    }
+
+    public function control() {
+        return $this->belongsTo(TypeOfControl::class, 'type_of_control_id');
+    }
+
+    protected $primaryKey = 'discipline_grope_id';
+
 }

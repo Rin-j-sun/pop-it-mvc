@@ -2,6 +2,8 @@
 
 namespace Controller;
 
+use Couchbase\Group;
+use DateTime;
 use Model\Disciplines;
 use Model\StudentsGroupe;
 use Model\Student;
@@ -38,9 +40,8 @@ class Employees
             ]);
 
             if ($validator->fails()) {
-                return new View('employees.add_students', [
-                    'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
-                ]);
+                return new View('employees.add_students',
+                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
             }
 
             $data = $request->all();
@@ -211,7 +212,7 @@ class Employees
                 'discipline_id' => $discipline_id->discipline_id,
                 'type_of_control_id' => $type_of_control_id->type_of_control_id,
                 'number_of_hours' => $data['number_of_hours'],
-                'cource' => $data['course'],
+                'course' => $data['course'],
                 'semester' => $data['semester']
             ]);
 
@@ -283,45 +284,68 @@ class Employees
 
 
 
-//    Фильтрация студентов по группам работает
+//    Фильтрация студентов работает
     public function gradeStudents(Request $request): string
     {
-        // Получаем данные из формы фильтров
+
+        $groupsGrades = StudentsGroupe::all();
+        $disciplinesGrades = Disciplines::all();
+        // Получаем все оценки со связанными моделями группы, студента и дисциплины
+        $gradesQuery = GroupeGrade::with('disciplinesGroup.info_group', 'student', 'evaluations');
         if ($request->method === 'POST') {
-            $groupId = $request->get('group_name');
-            $discipline = $request->get('discipline_name');
+            if ($request->get('groups')) {
+                $groupId = $request->get('groups');
+                // Добавляем условие фильтрации по выбранной группе
+                $gradesQuery->whereHas('disciplinesGroup.info_group', function ($query) use ($groupId) {
+                    $query->where('id', $groupId);
+                });
+            }
+            if ($request->get('disciplines')) {
+                $disciplineId = $request->get('disciplines');
+                // Добавляем условие фильтрации по выбранной дисциплине
+                $gradesQuery->whereHas('disciplinesGroup', function ($query) use ($disciplineId) {
+                    $query->where('discipline_id', $disciplineId);
+                });
+            }
         }
+        $grades = $gradesQuery->get();
+        $gradeList = [];
+        $notEmpty=false;
+        foreach ($grades as $grade) {
+            // Если есть оценка, добавляем информацию о студенте, группе, дисциплине и оценке
+            if ($grade->evaluations) {
+                $studentName = $grade->student->surname . ' ' . $grade->student->name . ' ' . $grade->student->patronymic;
+                $groupName = $grade->disciplinesGroup->info_group->group_name;
+                $disciplineName = $grade->disciplinesGroup->discipline->discipline_name;
+                $evaluation = $grade->evaluations->balls;
 
-        // Получаем студентов из базы данных с учетом фильтров
-        $query = Student::query();
+                $studentId=$grade->student->id;
 
-        // Фильтрация по группе, если выбрана группа
-        if ($groupId) {
-            $query->whereHas('group', function ($q) use ($groupId) {
-                $q->where('id', $groupId);
-            });
+                $gradeList[] = [
+                    'student' => $studentName,
+                    'group' => $groupName,
+                    'discipline' => $disciplineName,
+                    'evaluation' => $evaluation
+                ];
+                $notEmpty=true;
+            }
         }
-
-        // Фильтрация по дисциплине, если выбрана дисциплина
-//        if ($discipline) {
-//            $query->whereHas('grades', function ($q) use ($discipline) {
-//                $q->where('discipline_name', $discipline);
-//            });
-//        }
-
-        // Получаем отфильтрованных студентов
-        $select_students = $query->get();
-
-        // Получаем все группы и дисциплины для отображения в форме фильтров
-        $select_groups = StudentsGroupe::all();
-        $discipline_name = Disciplines::all();
-
-        // Передаем данные в представление
-        return new View('employees.grade_students', [
-            'select_students' => $select_students,
-            'select_groups' => $select_groups,
-            'discipline_name' => $discipline_name,
+        if (empty($gradeList)) {
+            return new View('employees.grade_students',  [
+                'groupsGrades' => $groupsGrades,
+                'disciplinesGrades' => $disciplinesGrades,
+                'notEmpty'=>$notEmpty,
+                'studentId'=>$studentId
+            ]);
+        }
+        return new View('employees.grade_students',  [
+            'gradeList' => $gradeList,
+            'groupsGrades' => $groupsGrades,
+            'disciplinesGrades' => $disciplinesGrades,
+            'notEmpty'=>$notEmpty,
+            'studentId'=>$studentId
         ]);
+
     }
 
 
@@ -333,43 +357,69 @@ class Employees
     //    Страница студента и его оценивания не отправляется id студента
     public function vueStudent(Request $request): string
     {
-        $select_students = Student::all();
-        $select_groups = StudentsGroupe::all();
         $select_balls = Evaluations::all();
-        $discipline_name = Disciplines::all();
+        $studentId = $request->id;
+        $studentInfo = Student::find($studentId);
+        $studentName = $studentInfo->surname . ' ' . $studentInfo->name . ' ' . $studentInfo->patronymic;
+        $groupName = $studentInfo->group->name;
+        $groupId = $studentInfo->group->id;
+        $disciplinesGroup = GroupeDisciplines::where('group_id', $groupId)->get();
 
-        if ($request->method === 'POST') {
-            $validator = new Validator($request->all(), [
-                'discipline_name' => ['required'],
-                'ball' => ['required'],
-            ], [
-                'required' => 'Поле :attribute пусто',
-            ]);
+        // Получение оценок студента
+        $grades = GroupeGrade::where('student_id', $studentId)->get();
 
-            if ($validator->fails()) {
-                return new View('employees.student', [
-                    'message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)
-                ]);
-            }
-            // Создание записи оценки на основе данных из формы
-            $currentDate = Carbon::now()->toDateTimeString();
-            $data = $request->all();
-            GroupeGrade::create([
-                'groupe_discipline_id' => $data['discipline_name'],
-                'evaluations_id' => $data['ball'],
-                'data' => $currentDate,
-                'student_id' => $data['student_id'],
-            ]);
+        $studentGrades = GroupeGrade::where('student_id', $studentId)
+            ->with('student', 'evaluations', 'disciplinesGroup')
+            ->get();
 
-            // Перенаправление пользователя после успешного создания записи
-            return app()->route->redirect('/student');
+
+        // Проверка наличия оценки у студента по каждой дисциплине
+        $hasGrade = [];
+        foreach ($disciplinesGroup as $disciplineGroup) {
+            $hasGrade[$disciplineGroup->discipline_grope_id] = $grades->where('groupe_discipline_id', $disciplineGroup->discipline_grope_id)->isNotEmpty();
         }
 
+        $date = new DateTime();
+        if ($request->method === 'POST') {
+            $disciplineGroupId = $request->get('disciplineGroupId');
+            $evaluationName = $request->get('evaluationName');
+            $selectedEvaluation = Evaluations::where('balls', $evaluationName)->first();
+
+            if ($selectedEvaluation) {
+                $evaluationId = $selectedEvaluation->id;
+
+                // Проверка, существует ли уже оценка у студента по выбранной дисциплине
+                $existingGrade = GroupeGrade::where('groupe_discipline_id', $disciplineGroupId)
+                    ->where('student_id', $studentId);
+
+                if ($existingGrade->exists()) {
+                    // Обновление существующей оценки
+                    $existingGrade->update([
+                        'evaluations_id' => $evaluationId,
+                        'data' => $date
+                    ]);
+                } else {
+                    // Создание новой оценки
+                    GroupeGrade::create([
+                        'groupe_discipline_id' => $disciplineGroupId,
+                        'student_id' => $studentId,
+                        'evaluations_id' => $evaluationId,
+                        'data' => $date
+                    ]);
+                }
+            }
+
+            app()->route->redirect('/student?id=' .  $studentId);
+        }
+
+
+
         return new View('employees.student', [
-            'select_groups' => $select_groups,
-            'discipline_name' => $discipline_name,
-            'select_students' => $select_students,
+            'disciplinesGroup' => $disciplinesGroup,
+            'studentName' => $studentName,
+            'groupName' => $groupName,
             'select_balls' => $select_balls,
+            'studentGrade' => $studentGrades,
         ]);
     }
 
