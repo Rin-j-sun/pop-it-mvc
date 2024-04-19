@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f362c5328e62de6ca7279e079c94c98f",
+    "content-hash": "28df0b62081f3bed2fe12a65ac4e2dd9",
     "packages": [
         {
             "name": "brick/math",
@@ -1171,12 +1171,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "e5e7ddb00b859dbdf5ad8f3bbe4cd29a3a37aa34"
+                "reference": "3cf95983a25d6439cac5f5164f0bfeeb1eb5d264"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/e5e7ddb00b859dbdf5ad8f3bbe4cd29a3a37aa34",
-                "reference": "e5e7ddb00b859dbdf5ad8f3bbe4cd29a3a37aa34",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/3cf95983a25d6439cac5f5164f0bfeeb1eb5d264",
+                "reference": "3cf95983a25d6439cac5f5164f0bfeeb1eb5d264",
                 "shasum": ""
             },
             "require": {
@@ -1244,7 +1244,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-03-14T13:49:05+00:00"
+            "time": "2024-04-12T09:26:28+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
@@ -1333,12 +1333,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "44eda81d684f71f1c1aa1495e03e8a2014230019"
+                "reference": "fc05d2dd30c3529266108c8b51ce5487f1684f50"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/44eda81d684f71f1c1aa1495e03e8a2014230019",
-                "reference": "44eda81d684f71f1c1aa1495e03e8a2014230019",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/fc05d2dd30c3529266108c8b51ce5487f1684f50",
+                "reference": "fc05d2dd30c3529266108c8b51ce5487f1684f50",
                 "shasum": ""
             },
             "require": {
@@ -1420,7 +1420,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-03T07:20:51+00:00"
+            "time": "2024-04-12T22:37:50+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -1581,8 +1581,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "illuminate/database": 20,
-        "illuminate/events": 20,
-        "nikic/fast-route": 20
+        "illuminate/events": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -1590,5 +1589,5 @@
         "php": "^7.4 | ^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
