@@ -9,37 +9,46 @@ class SiteTest extends TestCase
 
     #[DataProvider('additionProvider')]
 
+//Тест на проверку авторизации
 
-    public function testAddEmployees(string $httpMethod, array $userData, string $message): void
+    public function testLogin(string $httpMethod, array $userData, string $message): void
     {
-        // Подготовка данных для теста
-        $userData = [
-            'login' => 'testuser',
-            'password' => 'passw123',
-        ];
+        // Проверяем, если пользователь с логином 'test5' передан в тест
 
-        // Создание заглушки для класса Request.
+        if ($userData['login'] === 'test5') {
+            // Создаем пользователя с паролем без правильной кодировки (хеширования) 'testpass5'
+            User::create([
+                'login' => $userData['login'],
+                'password' => md5('testpass5')
+            ]);
+        }
+
+        // Создаем заглушку для класса Request.
         $request = $this->createMock(\Src\Request::class);
         // Переопределяем метод all() и свойство method
         $request->expects($this->any())
-            ->method('all')
+           ->method('all')
             ->willReturn($userData);
-        $request->method = 'POST';
+        $request->method = $httpMethod;
 
-        // Вызов метода контроллера для добавления сотрудника
-        $controller = new \Controller\Admin();
-        $result = $controller->addEmployees($request);
+        //Сохраняем результат работы метода в переменную
+        $result = (new \Controller\Site())->login($request);
 
-        // Проверка результата
-        if ($result instanceof Src\View) {
-            // Ошибка валидации
-            $this->assertStringContainsString('<h3>', $result->render());
-        } else {
-            // Проверка успешного добавления сотрудника
-            $this->assertTrue((bool)User::where('login', $userData['login'])->count());
-            // Удаление созданного пользователя из базы данных
-            User::where('login', $userData['login'])->delete();
+        if (!empty($result)) {
+            //Проверяем варианты с ошибками
+            $message = '/' . preg_quote($message, '/') . '/';
+            $this->expectOutputRegex($message);
+            return;
         }
+
+        //Проверяем есть ли такой пользователь в базе данных
+        $userExists = User::where('login', $userData['login'])->exists();
+        $this->assertTrue($userExists);
+
+        //Проверяем редирект при успешной регистрации
+        $this->assertContains($message, xdebug_get_headers());
+        //Удаляем созданного пользователя из базы данных
+        User::where('login', $userData['login'])->delete();
     }
 
 
@@ -48,11 +57,14 @@ class SiteTest extends TestCase
     {
         return [
             ['GET', ['login' => '', 'password' => ''], '<h3></h3>'],
-            ['POST', ['login' => '', 'password' => ''], '<h3>{"login":["Поле login пусто","Поле login использует кириллицу"],"password":["Поле password пусто","Пароль должен содержать минимум 8 символов","Поле password использует кириллицу"]}</h3>'],
-            ['POST', ['login' => 'sabrina5', 'password' => '987654321'], '<h3>{"login":["Поле login должно быть уникально"]}</h3>'],
-            ['POST', ['login' => md5(time()), 'password' => 'admin1'], 'Location: /pop-it-mvc/hello'],
+            ['POST', ['login' => md5(time()), 'password' => md5(time())], '<h3>Неправильные логин или пароль</h3>'],
+            ['POST', ['login' => 'cat2', 'password' => md5(time())], '<h3>Неправильные логин или пароль</h3>'],
+            ['POST', ['login' => md5(time()), 'password' => 'ad123'], '<h3>Неправильные логин или пароль</h3>'],
+            ['POST', ['login' => '', 'password' => ''], '<h3>Неправильные логин или пароль</h3>'],
+            ['POST', ['login' => 'test5', 'password' => 'testpass5'], 'Location: /pop-it-mvc/hello'],
         ];
     }
+
 
     //Настройка конфигурации окружения
     protected function setUp(): void

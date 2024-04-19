@@ -10,6 +10,22 @@ a{
     text-decoration: none;
 }
 
+.form_photo{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form_photo_button{
+    border: #EC9704 2px solid;
+    border-radius: 50px;
+    width: 110px;
+    height: 46px;
+    color: #EC9704;
+    background-color: white;
+    margin-top: 5%;
+    margin-bottom: 10%;
+}
 
 .photo_bell{
     width: 30px;

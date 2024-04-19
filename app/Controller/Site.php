@@ -5,6 +5,7 @@ namespace Controller;
 use Src\View;
 use Src\Request;
 use Model\User;
+use Model\Image;
 use Src\Auth\Auth;
 use Src\Validator\Validator;
 
@@ -17,9 +18,22 @@ class Site
         return (new View())->render('site.post', ['posts' => $posts]);
     }
 
-    public function hello(): string
+    public function hello(Request $request): string
     {
-        return new View('site.hello', ['message' => 'hello working']);
+        $images = Image::all();
+
+        if ($request->method === 'POST') {
+                $image = $_FILES['image']['name'];
+                $imagePath = $_SERVER['DOCUMENT_ROOT'] . "/pop-it-mvc/public/img/";
+                $uploaded_file = $imagePath . basename($image);
+                move_uploaded_file($_FILES['image']['tmp_name'], $uploaded_file);
+
+                if (Image::create(['image' => $uploaded_file, 'name' => $image])) {
+                    app()->route->redirect('/hello');
+                }
+        }
+
+        return new View('site.hello', ['message' => 'hello working', 'images' => $images]);
     }
 
     public function login(Request $request): string
@@ -31,6 +45,7 @@ class Site
         //Если удалось аутентифицировать пользователя, то редирект
         if (Auth::attempt($request->all())) {
             app()->route->redirect('/hello');
+            return false;
         }
         //Если аутентификация не удалась, то сообщение об ошибке
         return new View('site.login', ['message' => 'Неправильные логин или пароль']);
@@ -40,31 +55,6 @@ class Site
     {
         Auth::logout();
         app()->route->redirect('/hello');
-    }
-
-    public function signup(Request $request): string
-    {
-        if ($request->method === 'POST') {
-
-            $validator = new Validator($request->all(), [
-                'name' => ['required'],
-                'login' => ['required', 'unique:users,login'],
-                'password' => ['required']
-            ], [
-                'required' => 'Поле :field пусто',
-                'unique' => 'Поле :field должно быть уникально'
-            ]);
-
-            if($validator->fails()){
-                return new View('site.signup',
-                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
-            }
-
-            if (User::create($request->all())) {
-                app()->route->redirect('/login');
-            }
-        }
-        return new View('site.signup');
     }
 
 
