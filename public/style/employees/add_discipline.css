@@ -96,3 +96,7 @@ button{
     flex-direction: row;
     gap: 20px;
 }
+
+.add{
+    margin-left: 33%;
+}

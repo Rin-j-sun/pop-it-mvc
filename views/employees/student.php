@@ -6,29 +6,39 @@
 
 <div class="student_content">
     <div class="student_block">
-        <h3>Студент :</h3>
-        <?php
-        // Получаем ID студента из адресной строки
-        $selectedStudentId = $_GET['id'] ?? null;
 
-        // Проверяем, существует ли ID студента
-        if ($selectedStudentId !== null) {
-            foreach ($select_students as $student) {
-                // Проверяем, соответствует ли ID студента ID, переданному в адресной строке
-                if ($student->id == $selectedStudentId) {
-                    $group = $student->group; // Получаем объект группы студента через связь
-                    if ($group) {
-                        $groupName = $group->group_name; // Получаем имя группы
-                        $url = app()->route->getUrl('/student') . "?id=$student->id"; // Предполагается, что вы хотите передать ID студента в качестве параметра
-                        echo "<a href=\"$url\">" . $student->surname . " " . $student->name . " " . $student->patronymic . " группа : " . $groupName . "</a>";
-                        break; // Выходим из цикла после первого совпадения
-                    }
+
+        <?php if (!empty($studentGrade)) : ?>
+            <?php
+
+
+
+            foreach ($studentGrade as $item) {
+                foreach ($item->evaluations as $evaluation) {
+                    echo $evaluation->name;
                 }
             }
-        } else {
-            echo "Студент не выбран"; // Либо другое действие в случае отсутствия ID студента
-        }
-        ?>
+
+            ?>
+            <h1>Успеваемость студента - <?=$studentName?></h1>
+            <ul class="discipline_list">
+                <?php $i = 1;
+                foreach ($studentGrade as $studentGrades) :
+                    $discipline = $studentGrades->disciplinesGroup->discipline->discipline_name;
+                    $control = $studentGrades->disciplinesGroup->control->type_of_control_name;
+                    $hours = $studentGrades->disciplinesGroup->number_of_hours;
+                    $evaluations=$studentGrades->evaluations->balls;?>
+                    <li class="student_in_list">
+                        <span class="counter"><?php echo $i; ?></span>
+                        <?php echo "$discipline - количество часов: $hours; вид контроля: $control; оценка: $evaluations;"; ?>
+                    </li>
+                    <?php $i++; ?>
+                <?php endforeach; ?>
+            </ul>
+        <?php else : ?>
+            <h1>Успеваемость студента - <?=$studentName?></h1>
+            <h4>Отсутствует успеваемость</h4>
+        <?php endif; ?>
 
     </div>
     <div class="studentcontent_block">
@@ -37,17 +47,20 @@
     <h3 class="stud_zag">Оценить студента</h3>
         <form method="post" class="student_eval">
             <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
-            <input type="hidden" name="student_id" value="<?= $selectedStudentId ?>">
             <h3 class="stud_zag">Выбрать дисциплину :</h3>
-            <select class="spisok_discipline" name="discipline_name">
+            <select class="spisok_discipline" name="disciplineGroupId">
                 <option value="">Дисциплина</option>
-                <?php foreach ($discipline_name as $discipline): ?>
-                    <option value="<?= $discipline->id ?>"><?= $discipline->discipline_name ?></option>
+                <?php foreach ($disciplinesGroup as $disciplineGroup) : ?>
+                    <?php $discipline = $disciplineGroup->discipline->discipline_name; ?>
+                    <?php
+                        var_dump($disciplinesGroup);
+                    ?>
+                    <option value="<?= $disciplineGroup->discipline_grope_id ?>"><?= $discipline ?></option>
                 <?php endforeach; ?>
             </select>
 
             <h3 class="stud_zag">Выбрать оценку :</h3>
-            <select class="spisok_eval" name="ball">
+            <select class="spisok_eval" name="evaluationName">
                 <option value="">Оценка</option>
                 <?php foreach ($select_balls as $ball): ?>
                     <option><?= $ball->balls ?></option>
@@ -56,6 +69,7 @@
 
             <button class="button_students_eval">Оценить</button>
         </form>
+
 
 
     </div>

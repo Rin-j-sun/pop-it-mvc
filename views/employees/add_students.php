@@ -11,7 +11,7 @@
 <!--            Успешное перенаправление-->
             <?php
             foreach ($select_students as $student) {
-                $url = app()->route->getUrl('/student') . "?id=$student->id"; // Assuming you want to pass student ID as a parameter
+                $url = app()->route->getUrl('/student') . "?id=$student->id";
                 echo "<a href=\"$url\"><option value=\"$student->id\">" . $student->surname . " " . $student->name . " " . $student->patronymic . "</option></a>";
             }
             ?>

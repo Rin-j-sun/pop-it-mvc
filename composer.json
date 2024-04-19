@@ -9,17 +9,7 @@
         "php": "^7.4 | ^8.0",
         "illuminate/database": "10.x-dev",
         "illuminate/events": "10.x-dev",
-        "nikic/fast-route": "^2.0@dev",
-        "ramsey/collection": "dev-main",
-        "doctrine/common": "3.5.x-dev",
-        "sebastian/type": "^5.0@dev",
-        "overtrue/socialite": "4.x-dev",
-        "symfony/validator": "7.1.x-dev",
-        "respect/validation": "dev-main",
-        "opis/json-schema": "^2.0@dev",
-        "laminas/laminas-validator": "^2.5",
-        "gr421_sosdm/collect": "dev-master",
-        "gr421sosdm/validators": "dev-master"
+        "nikic/fast-route": "^2.0@dev"
     },
 
     "autoload": {

@@ -17,6 +17,8 @@ class TypeOfControl  extends Model
     ];
 
 
-    public $table = 'type_of_control';
+    protected $table = 'type_of_control';
 
+
+    protected $primaryKey = 'type_of_control_id';
 }
