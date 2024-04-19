@@ -2,7 +2,7 @@
 
 namespace Controller;
 
-use Src\Validator\Validator;
+use Validator\Validator;
 use Src\View;
 use Src\Request;
 use Model\User;

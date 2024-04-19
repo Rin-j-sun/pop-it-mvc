@@ -11,8 +11,6 @@
         <?php if (!empty($studentGrade)) : ?>
             <?php
 
-
-
             foreach ($studentGrade as $item) {
                 foreach ($item->evaluations as $evaluation) {
                     echo $evaluation->name;

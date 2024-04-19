@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "28df0b62081f3bed2fe12a65ac4e2dd9",
+    "content-hash": "f070c8c0f309908ff28f111ae8ecddcf",
     "packages": [
         {
             "name": "brick/math",
@@ -225,6 +225,93 @@
                 }
             ],
             "time": "2024-02-18T21:47:00+00:00"
+        },
+        {
+            "name": "gr421_sosdm/collect",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Rin-j-sun/collect.git",
+                "reference": "1feea1613d39651011da9e329bb0e66730f27a81"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Rin-j-sun/collect/zipball/1feea1613d39651011da9e329bb0e66730f27a81",
+                "reference": "1feea1613d39651011da9e329bb0e66730f27a81",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Collect\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "gr421_sosdm",
+                    "email": "sabrina.sotnikova@gmail.com"
+                }
+            ],
+            "description": "Module for working with arrays",
+            "support": {
+                "issues": "https://github.com/Rin-j-sun/collect/issues",
+                "source": "https://github.com/Rin-j-sun/collect/tree/master"
+            },
+            "time": "2024-04-18T05:02:57+00:00"
+        },
+        {
+            "name": "gr421_sosdm/validators",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Rin-j-sun/validators.git",
+                "reference": "e6c329623b671053d7c71ac9db16a361f3fd756a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Rin-j-sun/validators/zipball/e6c329623b671053d7c71ac9db16a361f3fd756a",
+                "reference": "e6c329623b671053d7c71ac9db16a361f3fd756a",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 | ^8.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Src\\": "core/Src/",
+                    "Validator\\": "src/Validator",
+                    "Validators\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "rin-j-sun",
+                    "email": "sabrina.sotnikova@gmail.com"
+                }
+            ],
+            "description": "Module for working with validators ",
+            "support": {
+                "issues": "https://github.com/Rin-j-sun/validators/issues",
+                "source": "https://github.com/Rin-j-sun/validators/tree/master"
+            },
+            "time": "2024-04-19T06:45:34+00:00"
         },
         {
             "name": "illuminate/bus",
@@ -485,12 +572,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "d6bded9f69b2c1094d24008afcce85a002f7ab04"
+                "reference": "f07e44e02163070fc02826ba132863a61e728de4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/d6bded9f69b2c1094d24008afcce85a002f7ab04",
-                "reference": "d6bded9f69b2c1094d24008afcce85a002f7ab04",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/f07e44e02163070fc02826ba132863a61e728de4",
+                "reference": "f07e44e02163070fc02826ba132863a61e728de4",
                 "shasum": ""
             },
             "require": {
@@ -550,7 +637,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-04-10T14:54:03+00:00"
+            "time": "2024-04-16T19:48:48+00:00"
         },
         {
             "name": "illuminate/events",
@@ -1171,12 +1258,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "3cf95983a25d6439cac5f5164f0bfeeb1eb5d264"
+                "reference": "e642fbe7a7b73cdb05460555289a9057bfd6ead6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/3cf95983a25d6439cac5f5164f0bfeeb1eb5d264",
-                "reference": "3cf95983a25d6439cac5f5164f0bfeeb1eb5d264",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/e642fbe7a7b73cdb05460555289a9057bfd6ead6",
+                "reference": "e642fbe7a7b73cdb05460555289a9057bfd6ead6",
                 "shasum": ""
             },
             "require": {
@@ -1244,7 +1331,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-12T09:26:28+00:00"
+            "time": "2024-04-19T06:31:17+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
@@ -1252,12 +1339,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php80.git",
-                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b"
+                "reference": "7d191eb4022901cd3d91a816ec5464ca3a08a8aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
-                "reference": "87b68208d5c1188808dd7839ee1e6c8ec3b02f1b",
+                "url": "https://api.github.com/repos/symfony/polyfill-php80/zipball/7d191eb4022901cd3d91a816ec5464ca3a08a8aa",
+                "reference": "7d191eb4022901cd3d91a816ec5464ca3a08a8aa",
                 "shasum": ""
             },
             "require": {
@@ -1309,7 +1396,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php80/tree/v1.29.0"
+                "source": "https://github.com/symfony/polyfill-php80/tree/1.x"
             },
             "funding": [
                 {
@@ -1325,7 +1412,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-01-29T20:11:03+00:00"
+            "time": "2024-04-19T06:31:17+00:00"
         },
         {
             "name": "symfony/translation",
@@ -1333,12 +1420,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/translation.git",
-                "reference": "fc05d2dd30c3529266108c8b51ce5487f1684f50"
+                "reference": "7495687c58bfd88b7883823747b0656d90679123"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/translation/zipball/fc05d2dd30c3529266108c8b51ce5487f1684f50",
-                "reference": "fc05d2dd30c3529266108c8b51ce5487f1684f50",
+                "url": "https://api.github.com/repos/symfony/translation/zipball/7495687c58bfd88b7883823747b0656d90679123",
+                "reference": "7495687c58bfd88b7883823747b0656d90679123",
                 "shasum": ""
             },
             "require": {
@@ -1420,7 +1507,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-04-12T22:37:50+00:00"
+            "time": "2024-04-18T09:22:46+00:00"
         },
         {
             "name": "symfony/translation-contracts",
@@ -1581,7 +1668,10 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "illuminate/database": 20,
-        "illuminate/events": 20
+        "illuminate/events": 20,
+        "nikic/fast-route": 20,
+        "gr421_sosdm/collect": 20,
+        "gr421_sosdm/validators": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -1589,5 +1679,5 @@
         "php": "^7.4 | ^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
