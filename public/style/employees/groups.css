@@ -29,9 +29,24 @@ button{
     display: flex;
     flex-direction: row;
     gap: 35px;
+    margin-top: 5%;
 }
 
 h2{
     padding-left: 18%;
     padding-bottom: 4%;
+}
+
+.groups_spisok{
+    background-color: bisque;
+    margin-top: 7%;
+}
+
+.groups_spisok_content{
+    padding-left: 35%;
+}
+
+.groups_spisok_link{
+    padding-top: 3%;
+    padding-left: 17%;
 }

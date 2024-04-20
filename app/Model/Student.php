@@ -13,16 +13,17 @@ class Student  extends Model
 
     public $timestamps = false;
     protected $fillable = [
-        'name',
         'surname',
+        'name',
         'patronymic',
         'gender',
-        'date',
-        'address',
+        'birthdate',
+        'adress',
+        'users_groupe'
         ];
 
     public function group() {
 
-        return $this->belongsTo(Group::class, 'id_group');
+        return $this->belongsTo(StudentsGroupe::class, 'users_groupe');
     }
 }

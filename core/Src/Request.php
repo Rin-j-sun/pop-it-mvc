@@ -10,6 +10,7 @@ class Request
     public string $method;
     public array $headers;
 
+
     public function __construct()
     {
         $this->body = $_REQUEST;
@@ -44,4 +45,5 @@ class Request
         }
         throw new Error('Accessing a non-existent property');
     }
+
 }

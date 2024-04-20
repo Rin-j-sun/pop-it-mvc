@@ -13,7 +13,12 @@ return [
 
     'validators' => [
     'required' => \Validators\RequireValidator::class,
-    'unique' => \Validators\UniqueValidator::class
+    'unique' => \Validators\UniqueValidator::class,
+    'usernameLength'=>\Validators\UsernameLengthValidator::class,
+    'uniquenessDiscipline'=>\Validators\UniquenessDisciplineValidator::class,
+    'passwordLength'=>\Validators\PasswordLengthValidator::class,
+    'passwordComplexity'=>\Validators\PasswordComplexityValidator::class,
+    'cyrillic'=>\Validators\CyrillicValidator::class,
 ],
 
     'routeAppMiddleware' => [
