@@ -35,7 +35,6 @@ class Admin
             // Если валидация прошла успешно, создаем нового пользователя
             if (User::create($request->all())) {
                 app()->route->redirect('/hello');
-                return false;
             }
         }
 

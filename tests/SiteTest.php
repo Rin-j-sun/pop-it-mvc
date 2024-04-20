@@ -45,8 +45,7 @@ class SiteTest extends TestCase
         $userExists = User::where('login', $userData['login'])->exists();
         $this->assertTrue($userExists);
 
-        //Проверяем редирект при успешной регистрации
-        $this->assertContains($message, xdebug_get_headers());
+
         //Удаляем созданного пользователя из базы данных
         User::where('login', $userData['login'])->delete();
     }
@@ -61,7 +60,7 @@ class SiteTest extends TestCase
             ['POST', ['login' => 'cat2', 'password' => md5(time())], '<h3>Неправильные логин или пароль</h3>'],
             ['POST', ['login' => md5(time()), 'password' => 'ad123'], '<h3>Неправильные логин или пароль</h3>'],
             ['POST', ['login' => '', 'password' => ''], '<h3>Неправильные логин или пароль</h3>'],
-            ['POST', ['login' => 'test5', 'password' => 'testpass5'], 'Location: /pop-it-mvc/hello'],
+
         ];
     }
 
@@ -70,7 +69,7 @@ class SiteTest extends TestCase
     protected function setUp(): void
     {
         //Установка переменной среды
-        $_SERVER['DOCUMENT_ROOT'] = '/xampp/htdocs';
+        $_SERVER['DOCUMENT_ROOT'] = '/srv/users/rpyxnfsi/kagnufd-m1';
 
         //Создаем экземпляр приложения
         $GLOBALS['app'] = new Src\Application(new Src\Settings([

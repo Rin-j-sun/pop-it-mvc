@@ -5,27 +5,43 @@
 
 
 <div class="add_students_content">
-    <div class="students_block"></div>
+    <div class="students_block">
+        <div class="students_spisok">
+        <h3>Список студентов</h3>
+<!--            Успешное перенаправление-->
+            <?php
+            foreach ($select_students as $student) {
+                $url = app()->route->getUrl('/student') . "?id=$student->id";
+                echo "<a href=\"$url\"><option value=\"$student->id\">" . $student->surname . " " . $student->name . " " . $student->patronymic . "</option></a>";
+            }
+            ?>
+    </div>
+    </div>
     <div class="add_students_content_block">
         <h2>Добавить студента</h2>
+        <h3><?= $message ?? ''; ?></h3>
         <form method="post">
             <div class="form_add_student">
-                <input class="add_student_field" type="text" name="last_name" placeholder="Фамилия">
+                <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+                <input class="add_student_field" type="text" name="surname" placeholder="Фамилия">
                 <input class="add_student_field" type="text" name="name" placeholder="Имя">
                 <input class="add_student_field" type="text" name="patronymic" placeholder="Отчество">
                 <div class="spisok">
-                    <select class="spisok_add_student">
+                    <select class="gender" name="gender">
                         <option value="">Пол</option>
                         <option value="man">Мужской</option>
                         <option value="woman">Женский</option>
                     </select>
-                    <input class="spisok_add_student" type="date" placeholder="Дата">
+                    <input class="spisok_add_student" name="birthdate" type="date" placeholder="Дата">
                 </div>
-                <input class="add_student_field" type="text" name="address" placeholder="Адрес прописки">
-                <select class="add_student_field">
+                <input class="add_student_field" type="text" name="adress" placeholder="Адрес прописки">
+                <select name="group_id" class="id">
                     <option value="">Группа</option>
-                    <option value="453">112</option>
-                    <option value="421">421</option>
+                    <?php
+                    foreach ($select_groups as $select_group){
+                        echo "<option value=\"$select_group->id\">$select_group->group_name</option>";
+                    }
+                    ?>
                 </select>
             </div>
             <button class="button_add_student">Добавить</button>
