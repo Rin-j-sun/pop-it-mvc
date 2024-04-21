@@ -26,6 +26,7 @@ return [
         'trim' => \Middlewares\TrimMiddleware::class,
         'specialChars' => \Middlewares\SpecialCharsMiddleware::class,
         'json' => \Middlewares\JSONMiddleware::class,
+        'token' => \Middlewares\TokenMiddleware::class,
     ],
 
     'providers' => [

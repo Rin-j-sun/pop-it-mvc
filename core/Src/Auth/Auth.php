@@ -73,6 +73,17 @@ class Auth
         return $token;
     }
 
+    public static function tokenCheck(): bool
+    {
+
+        if (self::user()->token){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
 
 
 }
